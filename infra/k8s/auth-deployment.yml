@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: mohamedemad1/auth
+          env:
+            - name: MONGO_URI
+              value: mongodb://auth-mongo-cluster-ip-service:27017/auth
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret-social
+                  key: JWT_KEY
+            - name: CLOUDINARY_NAME
+              value: micro-services
+            - name: CLOUDINARY_API_KEY
+              value: "467668724553657"
+            - name: CLOUDINARY_API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: cloudinary-api-secret-social
+                  key: CLOUDINARY_API_SECRET
