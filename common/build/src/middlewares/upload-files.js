@@ -26,7 +26,7 @@ const uploadFiles = (req, res, next) => {
             if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
                 throw new bad_request_error_1.BadRequestError(`${file.originalname} should be valid image`);
             }
-            if (file.size > 1e5) {
+            if (file.size > 1e6) {
                 throw new bad_request_error_1.BadRequestError(`${file.originalname} is larger`);
             }
         });
