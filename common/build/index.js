@@ -24,3 +24,5 @@ __exportStar(require("./src/middlewares/current-user"), exports);
 __exportStar(require("./src/middlewares/require-auth"), exports);
 __exportStar(require("./src/middlewares/upload-files"), exports);
 // Export Events
+// Export Types
+__exportStar(require("./src/types/gender-type"), exports);
