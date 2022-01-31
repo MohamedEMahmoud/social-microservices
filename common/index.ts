@@ -18,3 +18,5 @@ export * from "./src/middlewares/upload-files";
 
 // Export Events
 
+// Export Types
+export * from "./src/types/gender-type";

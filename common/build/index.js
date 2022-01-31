@@ -17,7 +17,6 @@ __exportStar(require("./src/errors/database-connection-error"), exports);
 __exportStar(require("./src/errors/not-authorized-error"), exports);
 __exportStar(require("./src/errors/not-found-error"), exports);
 __exportStar(require("./src/errors/request-validation-error"), exports);
-__exportStar(require("./src/errors/file-upload-error"), exports);
 // Export Middlewares
 __exportStar(require("./src/middlewares/error-handler"), exports);
 __exportStar(require("./src/middlewares/validate-request"), exports);
