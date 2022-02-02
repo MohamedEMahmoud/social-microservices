@@ -31,8 +31,10 @@ interface UserDoc extends mongoose.Document {
     from: string;
     isAdmin: boolean;
     macAddress: { MAC: String; }[];
-    ban: { period: string; reason: string; end_in: Date; }[];
+    ban: { id: string; period: string; reason: string; end_in: string; }[];
     hasAccess: boolean;
+    updatedAt: string;
+    createdAt: string;
     version: number;
 }
 
@@ -46,8 +48,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         unique: true,
-        min: 3,
-        max: 20,
+        minlength: [8, 'Username must be more than 8 characters'],
         lowercase: true,
     },
     email: {
@@ -72,9 +73,11 @@ const userSchema = new mongoose.Schema({
     },
     profilePicture: {
         type: String,
+        default: ""
     },
     coverPicture: {
         type: String,
+        default: ""
     },
     followers: {
         type: Array,
@@ -113,7 +116,7 @@ const userSchema = new mongoose.Schema({
             trim: true
         },
         end_in: {
-            type: Date,
+            type: String,
         }
     }],
     hasAccess: {
@@ -149,3 +152,12 @@ userSchema.pre("save", async function (next) {
 
 const User = mongoose.model<UserDoc, UserModel>("User", userSchema);
 export { User, GenderType };
+
+// userSchema.virtual('id' , () =>
+// {
+//     return this._id.toHexString();
+// });
+
+// userSchema.set('toJSON' , {
+//     virtuals : true
+// });

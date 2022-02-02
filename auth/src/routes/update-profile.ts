@@ -1,38 +1,57 @@
 import express, { Request, Response } from "express";
-import { validateRequest, BadRequestError, validateImage, upload } from "@mesocial/common";
+import { requireAuth, BadRequestError, upload, validateImage } from "@mesocial/common";
 import { User } from "../models/user.model";
-import jwt from "jsonwebtoken";
 import { v2 as Cloudinary } from "cloudinary";
-import address from "address";
+import { Password } from "../services/Password";
+import _ from "lodash";
 
 const router = express.Router();
 
-router.post("/api/auth/signup",
-    upload.fields([
-        { name: "profilePicture", maxCount: 1 },
-        { name: "coverPicture", maxCount: 1 }
-    ]),
+router.patch("/api/auth/user",
+    upload.fields([{ name: "profilePicture", maxCount: 1 }, { name: "coverPicture", maxCount: 1 }]),
+    requireAuth,
     validateImage,
-    validateRequest,
     async (req: Request, res: Response) => {
         const files = req.files as { [fieldname: string]: Express.Multer.File[]; };
 
-        const email = await User.findOne({ email: req.body.email });
-        if (email) {
-            throw new BadRequestError("Email is already exist");
+        const user = await User.findById(req.currentUser!.id);
+
+        if (!user) {
+            throw new BadRequestError("Invalid credentials");
         }
 
-        const username = await User.findOne({ username: req.body.username });
-        if (username) {
-            throw new BadRequestError("username is already exist");
+        if (req.body.username) {
+            const existingUserName = await User.findOne({ username: req.body.username });
+
+            if (existingUserName) {
+                throw new BadRequestError("username already exists");
+            }
+
+            user.username = req.body.username;
         }
 
-        const user = User.build({ ...req.body });
+        if (req.body.email) {
+            const existingEmail = await User.findOne({ email: req.body.email });
 
-        const userJwt = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_KEY!);
-        req.session = {
-            jwt: userJwt
-        };
+            if (existingEmail) {
+                throw new BadRequestError("Email already exists");
+            }
+
+            user.email = req.body.email;
+        }
+
+        if (req.body.password) {
+            let isTheSamePassword = await Password.compare(
+                user.password,
+                req.body.password,
+            );
+
+            if (isTheSamePassword) {
+                throw new BadRequestError("Can not change password with the previous one");
+            }
+            user.password = req.body.password;
+        }
+
         if (files.profilePicture) {
             await new Promise((resolve, reject) => {
                 Cloudinary.uploader.upload_stream({
@@ -77,21 +96,13 @@ router.post("/api/auth/signup",
                     }
                 }).end(files.coverPicture[0].buffer);
             });
-
         }
 
-        await address.mac((err, addr) => {
-            if (err) {
-                throw new BadRequestError("Can not reach to MAC Address");
-            }
-            else {
-                return user.macAddress.push({ MAC: addr });
-            }
-        });
-
+        user.updatedAt = new Date().toISOString();
+        _.extend(user, req.body);
         await user.save();
 
-        res.status(201).send({ status: 201, user, success: true });
+        res.status(200).send({ status: 200, user, success: true });
     });
 
-export { router as signupRouter };
+export { router as updateProfileRouter };

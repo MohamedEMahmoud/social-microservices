@@ -5,7 +5,7 @@ const bad_request_error_1 = require("../errors/bad-request-error");
 const validateRequest = (req, res, next) => {
     const emailFormValidation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const passwordSpecialCharsValidation = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-    const fieldRequired = ['name', 'username', 'email', 'password', 'gender'];
+    const fieldRequired = ['username', 'email', 'password', 'gender'];
     const fieldName = [...Object.keys(req.body)];
     for (let i in fieldRequired) {
         if (!fieldName.includes(fieldRequired[i])) {
