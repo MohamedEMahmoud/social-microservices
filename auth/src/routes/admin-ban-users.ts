@@ -1,8 +1,7 @@
 import express, { Request, Response } from "express";
 import { User } from "../models/user.model";
-import { requireAuth, BadRequestError } from "@mesocial/common";
+import { requireAuth, BadRequestError, upload } from "@mesocial/common";
 import moment from "moment";
-import { upload } from "../middlewares";
 
 const router = express.Router();
 
@@ -33,7 +32,7 @@ router.patch("/api/auth/admin/ban",
         if (existingUser.isAdmin) {
             throw new BadRequestError("Admin User");
         }
-        
+
         if (!req.body.reason) {
             throw new BadRequestError("Reason Ban is required");
         }
