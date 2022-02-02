@@ -6,7 +6,7 @@ export const validateRequest = (req: Request, res: Response, next: NextFunction)
 
     const passwordSpecialCharsValidation = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 
-    const fieldRequired = ['name', 'username', 'email', 'password', 'gender'];
+    const fieldRequired = ['username', 'email', 'password', 'gender'];
     const fieldName = [...Object.keys(req.body)];
     for (let i in fieldRequired) {
         if (!fieldName.includes(fieldRequired[i])) {
