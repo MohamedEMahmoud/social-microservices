@@ -18,6 +18,10 @@ router.patch("/api/auth/user/follow",
 
         await user.updateOne({ $push: { followers: currentUser!.id } });
 
+        // todo: publish user data to timeline rout in post service
+
+
+
         res.status(200).send({ status: 200, currentUser, success: true });
     });
 

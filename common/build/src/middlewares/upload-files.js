@@ -11,7 +11,7 @@ const upload = (0, multer_1.default)({ storage });
 exports.upload = upload;
 const uploadFiles = (req, res, next) => {
     const files = req.files;
-    const fields = ["profilePicture", "coverPicture", "image"];
+    const fields = ["profilePicture", "coverPicture", "images"];
     fields.map(field => {
         if (field in files) {
             files[field].map(file => {

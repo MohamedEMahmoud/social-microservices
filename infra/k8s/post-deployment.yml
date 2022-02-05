@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: post
+  template:
+    metadata:
+      labels:
+        app: post
+    spec:
+      containers:
+        - name: post
+          image: mohamedemad1/post
+          env:
+            - name: MONGO_URI
+              value: mongodb://post-mongo-cluster-ip-service:27017/post
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret-social
+                  key: JWT_KEY
+            - name: CLOUDINARY_NAME
+              value: micro-services
+            - name: CLOUDINARY_API_KEY
+              value: "467668724553657"
+            - name: CLOUDINARY_API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: cloudinary-api-secret-social
+                  key: CLOUDINARY_API_SECRET

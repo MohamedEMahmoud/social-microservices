@@ -22,12 +22,11 @@ router.delete("/api/auth/admin/ban",
         }
 
         existingUser.ban = existingUser.ban.filter(el => el.id !== req.query.banId);
-        
-        if (existingUser.ban.length !== 0) {
-            existingUser.hasAccess = false;
-        }
 
-        existingUser.hasAccess = true;
+        if (existingUser.ban.length === 0) {
+            existingUser.hasAccess = true;
+        } 
+        
         await existingUser.save();
 
         res.status(200).send({ status: 200, existingUser, success: true });
