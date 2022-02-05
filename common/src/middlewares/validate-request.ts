@@ -23,9 +23,10 @@ export const validateRequest = (req: Request, res: Response, next: NextFunction)
             if (req.body.password.toLowerCase().includes("password") || req.body.password.toLowerCase().includes("qwerty") || req.body.password.toLowerCase().includes("asdf")) {
                 throw new BadRequestError("For security reasons! The Password can contain neither 'password' nor 'qwerty' nor 'asdf'.");
             }
+        }
+        else {
             throw new BadRequestError(`Field ${field} is required`);
         }
-
     });
     next();
 };

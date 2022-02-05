@@ -11,26 +11,19 @@ const upload = (0, multer_1.default)({ storage });
 exports.upload = upload;
 const uploadFiles = (req, res, next) => {
     const files = req.files;
-    if (files.profilePicture) {
-        files.profilePicture.map(file => {
-            if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-                throw new bad_request_error_1.BadRequestError(`${file.originalname} should be valid image`);
-            }
-            if (file.size > 1e6) {
-                throw new bad_request_error_1.BadRequestError(`${file.originalname} is larger`);
-            }
-        });
-    }
-    if (files.coverPicture) {
-        files.coverPicture.map(file => {
-            if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-                throw new bad_request_error_1.BadRequestError(`${file.originalname} should be valid image`);
-            }
-            if (file.size > 1e6) {
-                throw new bad_request_error_1.BadRequestError(`${file.originalname} is larger`);
-            }
-        });
-    }
+    const fields = ["profilePicture", "coverPicture", "image"];
+    fields.map(field => {
+        if (field in files) {
+            files[field].map(file => {
+                if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+                    throw new bad_request_error_1.BadRequestError(`${file.originalname} should be valid image`);
+                }
+                if (file.size > 1e6) {
+                    throw new bad_request_error_1.BadRequestError(`${file.originalname} is larger`);
+                }
+            });
+        }
+    });
     next();
 };
 exports.validateImage = uploadFiles;
