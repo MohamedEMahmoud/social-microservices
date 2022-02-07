@@ -21,8 +21,8 @@ router.patch("/api/post/update",
         }
 
         if (files.images) {
-            await new Promise(async (resolve, reject) => {
-                files.images.map(async image => {
+            await new Promise((resolve, reject) => {
+                files.images.map(image => {
                     const imageId = randomBytes(16).toString("hex");
                     return Cloudinary.uploader.upload_stream({
                         public_id: `post-image/${imageId}-${image.originalname}/social-${post.userId}`,
@@ -33,7 +33,7 @@ router.patch("/api/post/update",
                         crop: "scale",
                         placeholder: true,
                         resource_type: 'auto'
-                    }, async (err, result) => {
+                    }, (err, result) => {
                         if (err) {
                             console.log(err);
                             reject(err);

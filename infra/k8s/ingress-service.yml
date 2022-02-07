@@ -24,3 +24,10 @@ spec:
                 name: post-cluster-ip-service
                 port:
                   number: 3000
+          - path: /api/product/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: market-cluster-ip-service
+                port:
+                  number: 3000

@@ -15,6 +15,10 @@ interface UserAttrs {
     from?: string;
     isAdmin?: boolean;
     macAddress: { MAC: string; }[];
+    activeKey: string;
+    active?: boolean;
+    resetPasswordKey?: string;
+    resetPasswordExpires?: string;
 }
 
 interface UserDoc extends mongoose.Document {
@@ -36,6 +40,10 @@ interface UserDoc extends mongoose.Document {
     updatedAt: string;
     createdAt: string;
     version: number;
+    activeKey: string;
+    active: boolean;
+    resetPasswordKey: string;
+    resetPasswordExpires: string;
 }
 
 interface UserModel extends mongoose.Model<UserDoc> {
@@ -122,7 +130,20 @@ const userSchema = new mongoose.Schema({
     hasAccess: {
         type: Boolean,
         default: true
-    }
+    },
+    activeKey: {
+        type: String,
+    },
+    active: {
+        type: Boolean,
+        default: false
+    },
+    resetPasswordKey: {
+        type: String,
+    },
+    resetPasswordExpires: {
+        type: String,
+    },
 }, {
     toJSON: {
         transform(doc, ret) {

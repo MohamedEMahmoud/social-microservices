@@ -11,6 +11,8 @@ import { like_unlikePostRouter } from "./routes/like-unlike";
 import { showPostRouter } from "./routes/show";
 import { show_allPostRouter } from "./routes/show-all";
 import { timeLinePostRouter } from "./routes/timeline";
+import { searchPostRouter } from "./routes/search";
+import { searchAllPostRouter } from "./routes/search-all";
 
 const app = express();
 
@@ -30,7 +32,9 @@ app.use([
     like_unlikePostRouter,
     showPostRouter,
     show_allPostRouter,
-    timeLinePostRouter
+    timeLinePostRouter,
+    searchPostRouter,
+    searchAllPostRouter
 
 ]);
 

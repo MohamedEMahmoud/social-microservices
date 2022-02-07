@@ -1,28 +1,31 @@
 import express, { Request, Response } from "express";
-import { requireAuth, upload, validateImage } from "@mesocial/common";
-import { Post } from "../model/post.model";
+import { requireAuth, BadRequestError, upload, validateImage } from "@mesocial/common";
+import { Product } from "../model/product.model";
 import { v2 as Cloudinary } from "cloudinary";
+import _ from "lodash";
 import { randomBytes } from "crypto";
+
 const router = express.Router();
 
-router.post("/api/post/create",
+router.patch("/api/product/update",
     upload.fields([{ name: "images" }]),
     requireAuth,
     validateImage,
     async (req: Request, res: Response) => {
         const files = req.files as { [fieldname: string]: Express.Multer.File[]; };
 
-        const post = Post.build({
-            userId: req.currentUser!.id,
-            desc: req.body.desc,
-        });
+        const product = await Product.findById(req.query.id);
+
+        if (!product) {
+            throw new BadRequestError("Product Not Found");
+        }
 
         if (files.images) {
-            await new Promise((resolve, reject) => {
-                files.images.map(image => {
+            await new Promise(async (resolve, reject) => {
+                files.images.map(async image => {
                     const imageId = randomBytes(16).toString("hex");
                     return Cloudinary.uploader.upload_stream({
-                        public_id: `post-image/${imageId}-${image.originalname}/social-${post.userId}`,
+                        public_id: `product-image/${imageId}-${image.originalname}/social-${product.userId}`,
                         use_filename: true,
                         tags: `${imageId}-tag`,
                         width: 500,
@@ -30,23 +33,30 @@ router.post("/api/post/create",
                         crop: "scale",
                         placeholder: true,
                         resource_type: 'auto'
-                    }, (err, result) => {
+                    }, async (err, result) => {
                         if (err) {
                             console.log(err);
                             reject(err);
                         } else {
-                            post.images.push({ id: imageId, URL: result?.secure_url! });
+                            product.images.push({ id: imageId, URL: result?.secure_url! });
                             return setTimeout(() => {
-                                resolve(post.images);
+                                resolve(product.images);
                             }, parseInt(`${files.images.length}000`));
                         }
                     }).end(image.buffer);
                 });
             });
         }
-        await post.save();
-        res.status(201).send({ status: 201, post, success: true });
+
+        if (req.query.imageId) {
+            product.images = product.images.filter(image => image.id !== req.query.imageId);
+        }
+
+        _.extend(product, req.body);
+
+        await product.save();
+        res.status(200).send({ status: 200, product, success: true });
 
     });
 
-export { router as newPostRouter };
+export { router as updateProductRouter };
