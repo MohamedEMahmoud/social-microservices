@@ -10,13 +10,17 @@ router.patch('/api/auth/active', upload.none(), requireAuth, async (req: Request
     if (!user) {
         throw new BadRequestError("Invalid credentials");
     }
+
     if (!req.body.activeKey) {
         throw new BadRequestError("Active Key Is Required");
     }
-    if (user.activeKey === req.body.activeKey) {
-        user.active = true;
+
+    if (user.activeKey !== req.body.activeKey) {
+        throw new BadRequestError("Active Key Is Invalid");
+
     }
 
+    user.active = true;
     await user.save();
     res.status(200).send({ status: 200, user, success: true });
 

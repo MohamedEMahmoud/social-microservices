@@ -2,7 +2,21 @@ import mongoose from "mongoose";
 import { v2 as Cloudinary } from "cloudinary";
 import app from "./app";
 (async () => {
-    const Environment = ["MONGO_URI", "JWT_KEY", "CLOUDINARY_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"];
+    const Environment = [
+        "MONGO_URI",
+        "JWT_KEY",
+        "CLOUDINARY_NAME",
+        "CLOUDINARY_API_KEY",
+        "CLOUDINARY_API_SECRET",
+        "MAIL_USER",
+        "MAIL_PASS",
+        "MAIL_SERVER_PORT",
+        "CLIENT_ID",
+        "CLIENT_SECRET",
+        "REFRESH_TOKEN",
+        "REDIRECT_URI",
+        "EXPIRATION_WINDOW_MILLIE_SECOND"
+    ];
     Environment.forEach(el => {
         if (!process.env[el]) {
             throw new Error(`${el} Must Be Defined`);

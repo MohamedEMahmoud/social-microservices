@@ -63,7 +63,7 @@ router.patch("/api/auth/forget", upload.none(), async (req: Request, res: Respon
             throw new BadRequestError("Forgot Password Message Not Sent");
         } else {
             user.resetPasswordKey = resetPasswordKey;
-            const time = Date.now() + 3600000;
+            const time = Date.now() + Number(process.env.EXPIRATION_WINDOW_MILLIE_SECOND!);
             user.resetPasswordExpires = new Date(time).toISOString();
             await user.save();
             res

@@ -96,8 +96,8 @@ router.post("/api/auth/signup",
             process.env.CLIENT_SECRET,
             process.env.REDIRECT_URI
         );
-        client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN }); // create when add a email that send email to users app
-        const accessToken = await client.getAccessToken(); // accessToken generate to auth service from google mail
+        client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
+        const accessToken = await client.getAccessToken();
 
         const activeKey = randomBytes(8).toString("hex");
 
