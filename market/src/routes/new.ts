@@ -5,19 +5,20 @@ import { v2 as Cloudinary } from "cloudinary";
 import { randomBytes } from "crypto";
 const router = express.Router();
 
-router.post("/api/product/create",
+router.post("/api/product",
     upload.fields([{ name: "images" }]),
     requireAuth,
     validateImage,
     async (req: Request, res: Response) => {
         const files = req.files as { [fieldname: string]: Express.Multer.File[]; };
 
-        if (!files && !req.body) {
-            throw new BadRequestError("Can't Product Empty Request");
+        if (!req.body.price) {
+            throw new BadRequestError("Price is required");
         }
         const product = Product.build({
             userId: req.currentUser!.id,
             desc: req.body.desc,
+            price: req.body.price,
         });
 
         if (files.images) {

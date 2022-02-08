@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { requireAuth, BadRequestError, upload, validateImage } from "@mesocial/common";
+import { requireAuth, BadRequestError, upload, validateImage, NotAuthorizedError } from "@mesocial/common";
 import { Product } from "../model/product.model";
 import { v2 as Cloudinary } from "cloudinary";
 import _ from "lodash";
@@ -7,7 +7,7 @@ import { randomBytes } from "crypto";
 
 const router = express.Router();
 
-router.patch("/api/product/update",
+router.patch("/api/product",
     upload.fields([{ name: "images" }]),
     requireAuth,
     validateImage,
@@ -20,6 +20,14 @@ router.patch("/api/product/update",
             throw new BadRequestError("Product Not Found");
         }
 
+        if (product.orderId) {
+            throw new BadRequestError("Cannot edit a reserved product");
+        }
+
+        if (product.userId !== req.currentUser!.id) {
+            throw new NotAuthorizedError();
+        }
+        
         if (files.images) {
             await new Promise(async (resolve, reject) => {
                 files.images.map(async image => {

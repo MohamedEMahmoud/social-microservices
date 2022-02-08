@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
-
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 interface ProductAttrs {
     userId: string;
     images?: { id: string, URL: string; }[];
     desc?: string;
     likes?: string[];
+    price: number;
 }
 
 interface ProductDoc extends mongoose.Document {
@@ -12,7 +13,10 @@ interface ProductDoc extends mongoose.Document {
     images: { id: string, URL: string; }[];
     desc: string;
     likes: string[];
+    price: number;
     type: string;
+    version: number;
+    orderId: string;
 }
 
 interface ProductModel extends mongoose.Model<ProductDoc> {
@@ -38,9 +42,17 @@ const productSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    price: {
+        type: Number,
+        required: true,
+        min: 0
+    },
     type: {
         type: String,
         default: "Product"
+    },
+    orderId: {
+        type: String
     }
 
 }, {
@@ -51,8 +63,11 @@ const productSchema = new mongoose.Schema({
         }
     },
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
-    versionKey: false,
 });
+
+productSchema.set("versionKey", "version");
+
+productSchema.plugin(updateIfCurrentPlugin);
 
 productSchema.statics.build = (attrs: ProductAttrs) => new Product(attrs);
 

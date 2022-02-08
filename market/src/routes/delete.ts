@@ -3,7 +3,7 @@ import { requireAuth, BadRequestError } from "@mesocial/common";
 import { Product } from "../model/product.model";
 const router = express.Router();
 
-router.delete("/api/product/delete",
+router.delete("/api/product",
     requireAuth,
     async (req: Request, res: Response) => {
 
