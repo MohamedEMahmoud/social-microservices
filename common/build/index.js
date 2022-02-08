@@ -26,3 +26,4 @@ __exportStar(require("./src/middlewares/upload-files"), exports);
 // Export Events
 // Export Types
 __exportStar(require("./src/types/gender-type"), exports);
+__exportStar(require("./src/types/order-status"), exports);
