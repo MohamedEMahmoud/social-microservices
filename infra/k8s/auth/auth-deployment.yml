@@ -39,7 +39,7 @@ spec:
             - name: CLIENT_ID
               value: "1070496040691-lqta83gpoujs4ol1l4nrqnrt1op1k117.apps.googleusercontent.com"
             - name: REFRESH_TOKEN
-              value: "1//04xFVk3cv40uJCgYIARAAGAQSNwF-L9Ir4HHAybs5MePTiVcwJSv__s4t07p5LjIzajFHXUQoAlOYyja9Nz204F-rmOmplebrFqg"
+              value: "1//04khTkWyhqmygCgYIARAAGAQSNwF-L9IroHG-SZ4CWiMPQJw47Ro6mQeQ1O_SHeCQlUazcjyNU3Hl2AzLgX5E0mQ3QCcE4ACQLMU"
             - name: REDIRECT_URI
               value: "https://developers.google.com/oauthplayground"
             - name: MAIL_PASS
@@ -52,3 +52,5 @@ spec:
                 secretKeyRef:
                   name: client-api-secret-social
                   key: CLIENT_SECRET
+            - name: EXPIRATION_WINDOW_MILLIE_SECOND
+              value: "3600000"

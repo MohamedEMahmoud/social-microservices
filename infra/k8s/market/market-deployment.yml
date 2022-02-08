@@ -1,28 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: post-deployment
+  name: market-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: post
+      app: market
   template:
     metadata:
       labels:
-        app: post
+        app: market
     spec:
       containers:
-        - name: post
-          image: mohamedemad1/post
+        - name: market
+          image: mohamedemad1/market
           env:
             - name: MONGO_URI
-              value: mongodb://post-mongo-cluster-ip-service:27017/post
-            - name: JWT_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: jwt-secret-social
-                  key: JWT_KEY
+              value: mongodb://market-mongo-cluster-ip-service:27017/market
             - name: CLOUDINARY_NAME
               value: micro-services
             - name: CLOUDINARY_API_KEY
@@ -32,3 +27,4 @@ spec:
                 secretKeyRef:
                   name: cloudinary-api-secret-social
                   key: CLOUDINARY_API_SECRET
+
