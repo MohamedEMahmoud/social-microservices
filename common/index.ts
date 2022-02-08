@@ -20,3 +20,4 @@ export * from "./src/middlewares/upload-files";
 
 // Export Types
 export * from "./src/types/gender-type";
+export * from "./src/types/order-status";
