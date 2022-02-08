@@ -5,7 +5,7 @@ import { v2 as Cloudinary } from "cloudinary";
 import { randomBytes } from "crypto";
 const router = express.Router();
 
-router.post("/api/post/create",
+router.post("/api/post",
     upload.fields([{ name: "images" }]),
     requireAuth,
     validateImage,

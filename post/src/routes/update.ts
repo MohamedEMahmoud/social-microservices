@@ -7,7 +7,7 @@ import { randomBytes } from "crypto";
 
 const router = express.Router();
 
-router.patch("/api/post/update",
+router.patch("/api/post",
     upload.fields([{ name: "images" }]),
     requireAuth,
     validateImage,
