@@ -16,6 +16,11 @@ spec:
         - name: post
           image: mohamedemad1/post
           env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret-social
+                  key: JWT_KEY
             - name: MONGO_URI
               value: mongodb://post-mongo-cluster-ip-service:27017/post
             - name: CLOUDINARY_NAME
