@@ -35,6 +35,8 @@ router.patch("/api/auth/reset", upload.none(), async (req: Request, res: Respons
         }
 
         user.password = req.body.password;
+    } else {
+        throw new BadRequestError("Password Is Required");
     }
 
     await user.save();

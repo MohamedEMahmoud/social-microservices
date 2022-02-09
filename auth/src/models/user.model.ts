@@ -150,6 +150,10 @@ const userSchema = new mongoose.Schema({
             ret.id = ret._id;
             delete ret._id;
             delete ret.password;
+            ret.ban = ret.ban.map((data: any) => {
+                const { period, reason, end_in, _id: id } = data;
+                return { period, reason, end_in, id };
+            });
         }
     },
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
@@ -169,16 +173,5 @@ userSchema.pre("save", async function (next) {
     next();
 });
 
-
-
 const User = mongoose.model<UserDoc, UserModel>("User", userSchema);
 export { User, GenderType };
-
-// userSchema.virtual('id' , () =>
-// {
-//     return this._id.toHexString();
-// });
-
-// userSchema.set('toJSON' , {
-//     virtuals : true
-// });

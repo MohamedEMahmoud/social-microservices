@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { User } from "../models/user.model";
 import { requireAuth, BadRequestError } from "@mesocial/common";
-
+import mongoose from "mongoose";
 const router = express.Router();
 
 
@@ -15,6 +15,10 @@ router.delete("/api/auth/admin/ban",
             throw new BadRequestError("User have no this permission");
         }
 
+        if (!req.query.id || !mongoose.Types.ObjectId.isValid(String(req.query.id))) {
+            throw new BadRequestError("Id Is Invalid");
+        }
+
         const existingUser = await User.findById(req.query.id);
 
         if (!existingUser) {
@@ -25,8 +29,8 @@ router.delete("/api/auth/admin/ban",
 
         if (existingUser.ban.length === 0) {
             existingUser.hasAccess = true;
-        } 
-        
+        }
+
         await existingUser.save();
 
         res.status(200).send({ status: 200, existingUser, success: true });
