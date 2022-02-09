@@ -16,6 +16,11 @@ spec:
         - name: order
           image: mohamedemad1/order
           env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret-social
+                  key: JWT_KEY
             - name: MONGO_URI
               value: mongodb://order-mongo-cluster-ip-service:27017/order
             - name: EXPIRATION_WINDOW_MILLIE_SECOND
