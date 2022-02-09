@@ -16,6 +16,11 @@ spec:
         - name: market
           image: mohamedemad1/market
           env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret-social
+                  key: JWT_KEY
             - name: MONGO_URI
               value: mongodb://market-mongo-cluster-ip-service:27017/market
             - name: CLOUDINARY_NAME
@@ -27,4 +32,3 @@ spec:
                 secretKeyRef:
                   name: cloudinary-api-secret-social
                   key: CLOUDINARY_API_SECRET
-
