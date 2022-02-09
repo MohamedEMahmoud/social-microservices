@@ -3,6 +3,7 @@ import { requireAuth, upload, validateImage } from "@mesocial/common";
 import { Post } from "../model/post.model";
 import { v2 as Cloudinary } from "cloudinary";
 import { randomBytes } from "crypto";
+
 const router = express.Router();
 
 router.post("/api/post",
@@ -36,9 +37,9 @@ router.post("/api/post",
                             reject(err);
                         } else {
                             post.images.push({ id: imageId, URL: result?.secure_url! });
-                            return setTimeout(() => {
-                                resolve(post.images);
-                            }, parseInt(`${files.images.length}000`));
+                            if (files.images.length === post.images.length) {
+                                return resolve(post.images);
+                            }
                         }
                     }).end(image.buffer);
                 });

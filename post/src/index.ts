@@ -3,6 +3,7 @@ import { v2 as Cloudinary } from "cloudinary";
 import app from "./app";
 (async () => {
     const Environment = [
+        "JWT_KEY",
         "MONGO_URI",
         "CLOUDINARY_NAME",
         "CLOUDINARY_API_KEY",
