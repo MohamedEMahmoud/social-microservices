@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post("/api/product",
     upload.fields([{ name: "images" }]),
-    requireAuth,
+    // requireAuth,
     validateImage,
     async (req: Request, res: Response) => {
         const files = req.files as { [fieldname: string]: Express.Multer.File[]; };
@@ -40,9 +40,9 @@ router.post("/api/product",
                             reject(err);
                         } else {
                             product.images.push({ id: imageId, URL: result?.secure_url! });
-                            return setTimeout(() => {
-                                resolve(product.images);
-                            }, parseInt(`${files.images.length}000`));
+                            if (files.images.length === product.images.length) {
+                                return resolve(product.images);
+                            }
                         }
                     }).end(image.buffer);
                 });

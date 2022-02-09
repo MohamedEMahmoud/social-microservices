@@ -27,7 +27,7 @@ router.patch("/api/product",
         if (product.userId !== req.currentUser!.id) {
             throw new NotAuthorizedError();
         }
-        
+
         if (files.images) {
             await new Promise(async (resolve, reject) => {
                 files.images.map(async image => {
@@ -47,9 +47,9 @@ router.patch("/api/product",
                             reject(err);
                         } else {
                             product.images.push({ id: imageId, URL: result?.secure_url! });
-                            return setTimeout(() => {
-                                resolve(product.images);
-                            }, parseInt(`${files.images.length}000`));
+                            if (files.images.length === product.images.length) {
+                                return resolve(product.images);
+                            }
                         }
                     }).end(image.buffer);
                 });
