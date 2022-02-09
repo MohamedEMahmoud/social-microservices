@@ -8,7 +8,7 @@ interface ProductAttrs {
     price: number;
 }
 
-export interface ProductDoc extends mongoose.Document {
+interface ProductDoc extends mongoose.Document {
     id: string;
     images: { id: string, URL: string; }[];
     desc: string;
@@ -75,4 +75,4 @@ productSchema.methods.isReserved = async function () {
 
 const Product = mongoose.model<ProductDoc, ProductModel>("Product", productSchema);
 
-export { Product };
+export { Product, ProductDoc };

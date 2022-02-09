@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import app from "./app";
 (async () => {
     const Environment = [
+        "JWT_KEY",
         "MONGO_URI",
         "EXPIRATION_WINDOW_MILLIE_SECOND"
     ];

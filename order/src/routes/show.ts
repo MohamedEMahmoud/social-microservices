@@ -11,7 +11,7 @@ router.get("/api/order", requireAuth, async (req: Request, res: Response) => {
         throw new BadRequestError("orderId is required");
     }
 
-    if (mongoose.Types.ObjectId.isValid(Object(req.query.orderId))) {
+    if (!mongoose.Types.ObjectId.isValid(String(req.query.orderId))) {
         throw new BadRequestError("orderId is invalid");
     }
 

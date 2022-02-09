@@ -11,7 +11,7 @@ router.post("/api/order", requireAuth, async (req: Request, res: Response) => {
         throw new BadRequestError("ProductId Is Required");
     }
 
-    if (mongoose.Types.ObjectId.isValid(Object(req.query.productId))) { // is error replace number to string
+    if (!mongoose.Types.ObjectId.isValid(String(req.query.productId))) {
         throw new BadRequestError("ProductId Is Invalid");
     }
 
