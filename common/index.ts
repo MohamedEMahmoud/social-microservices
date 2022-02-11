@@ -17,6 +17,15 @@ export * from "./src/middlewares/upload-files";
 
 
 // Export Events
+export * from "./src/events/base-publisher";
+export * from "./src/events/base-listener";
+export * from "./src/events/subjects";
+export * from "./src/events/product-created-event";
+export * from "./src/events/product-updated-event";
+export * from "./src/events/order-created-event";
+export * from "./src/events/order-cancelled-event";
+export * from "./src/events/payment-created-event";
+export * from "./src/events/expiration-completed-event";
 
 // Export Types
 export * from "./src/types/gender-type";
