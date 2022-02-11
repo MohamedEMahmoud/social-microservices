@@ -24,6 +24,15 @@ __exportStar(require("./src/middlewares/current-user"), exports);
 __exportStar(require("./src/middlewares/require-auth"), exports);
 __exportStar(require("./src/middlewares/upload-files"), exports);
 // Export Events
+__exportStar(require("./src/events/base-publisher"), exports);
+__exportStar(require("./src/events/base-listener"), exports);
+__exportStar(require("./src/events/subjects"), exports);
+__exportStar(require("./src/events/product-created-event"), exports);
+__exportStar(require("./src/events/product-updated-event"), exports);
+__exportStar(require("./src/events/order-created-event"), exports);
+__exportStar(require("./src/events/order-cancelled-event"), exports);
+__exportStar(require("./src/events/payment-created-event"), exports);
+__exportStar(require("./src/events/expiration-completed-event"), exports);
 // Export Types
 __exportStar(require("./src/types/gender-type"), exports);
 __exportStar(require("./src/types/order-status"), exports);

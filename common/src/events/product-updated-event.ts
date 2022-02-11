@@ -9,5 +9,6 @@ export interface ProductUpdatedEvent {
         desc: string;
         price: number;
         version: number;
+        orderId?: string;
     };
 }
