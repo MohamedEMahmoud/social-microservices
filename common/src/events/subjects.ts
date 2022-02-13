@@ -1,5 +1,11 @@
 export enum Subjects {
-    
+
+    UserCreated = "user:created",
+    UserUpdated = "user:updated",
+    UserDeleted = "user:deleted",
+    UserFollow  = "user:follow",
+    UserBan     = "user:ban",
+
     ProductCreated = "product:create",
     ProductUpdated = "product:updated",
 
@@ -9,7 +15,5 @@ export enum Subjects {
     PaymentCreated = "payment:created",
 
     ExpirationCompleted = "expiration:completed",
-
-    BanCreated = "ban:created",
     ExpirationBan = "expiration:ban",
 }

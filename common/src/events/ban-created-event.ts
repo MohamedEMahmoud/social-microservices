@@ -1,7 +1,7 @@
 import { Subjects } from "./subjects";
 
 export interface BanCreatedEvent {
-    subject: Subjects.BanCreated;
+    subject: Subjects.UserBan;
     data: {
         id: string;
         ban: {
