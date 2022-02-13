@@ -5,8 +5,8 @@ export interface BanCreatedEvent {
     data: {
         id: string;
         ban: {
-            id?: string;
-            end_in?: string;
+            id: string;
+            end_in: string;
         };
     };
 }
