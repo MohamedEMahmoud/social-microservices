@@ -6,6 +6,6 @@ export interface FollowCreatedEvent {
         id: string;
         follower?: string;
         following?: string;
-        version: string;
+        version: number;
     };
 }

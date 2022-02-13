@@ -33,6 +33,10 @@ __exportStar(require("./src/events/order-created-event"), exports);
 __exportStar(require("./src/events/order-cancelled-event"), exports);
 __exportStar(require("./src/events/payment-created-event"), exports);
 __exportStar(require("./src/events/expiration-completed-event"), exports);
+__exportStar(require("./src/events/user-created-event"), exports);
+__exportStar(require("./src/events/user-updated-event"), exports);
+__exportStar(require("./src/events/user-deleted-event"), exports);
+__exportStar(require("./src/events/follow-created-event"), exports);
 __exportStar(require("./src/events/ban-created-event"), exports);
 // Export Types
 __exportStar(require("./src/types/gender-type"), exports);
