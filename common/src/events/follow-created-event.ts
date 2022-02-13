@@ -6,6 +6,7 @@ export interface FollowCreatedEvent {
         id: string;
         follower: string;
         following: string;
-        version: number;
+        currentUserVersion: number;
+        userVersion: number;
     };
 }

@@ -7,5 +7,7 @@ export interface UnFollowCreatedEvent {
         follower: string;
         following: string;
         version: number;
+        currentUserVersion: number;
+        userVersion: number;
     };
 }
