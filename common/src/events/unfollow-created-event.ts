@@ -1,7 +1,7 @@
 import { Subjects } from "./subjects";
 
-export interface FollowCreatedEvent {
-    subject: Subjects.UserFollow;
+export interface UnFollowCreatedEvent {
+    subject: Subjects.UserUnFollow;
     data: {
         id: string;
         follower: string;
