@@ -26,6 +26,7 @@ export * from "./src/events/order-created-event";
 export * from "./src/events/order-cancelled-event";
 export * from "./src/events/payment-created-event";
 export * from "./src/events/expiration-completed-event";
+export * from "./src/events/ban-crated-event";
 
 // Export Types
 export * from "./src/types/gender-type";
