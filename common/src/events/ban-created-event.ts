@@ -6,7 +6,7 @@ export interface BanCreatedEvent {
         id: string;
         ban: {
             id: string;
-            end_in: string;
+            end_in?: string;
         };
     };
 }
