@@ -36,3 +36,4 @@ export * from "./src/events/ban-created-event";
 // Export Types
 export * from "./src/types/gender-type";
 export * from "./src/types/order-status";
+export * from "./src/types/roles-type";
