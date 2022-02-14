@@ -6,8 +6,8 @@ export interface UserUpdatedEvent {
         id: string;
         email: string;
         username: string;
-        profilePicture?: string;
-        coverPicture?: string;
+        profilePicture: string;
+        coverPicture: string;
         roles: string;
         version: number;
     };
