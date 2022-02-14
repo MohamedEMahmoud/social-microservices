@@ -37,3 +37,4 @@ export * from "./src/events/ban-created-event";
 export * from "./src/types/gender-type";
 export * from "./src/types/order-status";
 export * from "./src/types/roles-type";
+export * from "./src/types/profile-picture-type";
