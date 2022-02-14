@@ -4,7 +4,7 @@ export interface ProductCreatedEvent {
     subject: Subjects.ProductCreated;
     data: {
         id: string;
-        userId: string;
+        merchantId: string;
         images: { id: string, URL: string; }[],
         content: string;
         price: number;
