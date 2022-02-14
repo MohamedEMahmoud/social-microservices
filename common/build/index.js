@@ -42,3 +42,4 @@ __exportStar(require("./src/events/ban-created-event"), exports);
 // Export Types
 __exportStar(require("./src/types/gender-type"), exports);
 __exportStar(require("./src/types/order-status"), exports);
+__exportStar(require("./src/types/roles-type"), exports);

@@ -6,7 +6,7 @@ export interface ProductCreatedEvent {
         id: string;
         userId: string;
         images: { id: string, URL: string; }[],
-        desc: string;
+        content: string;
         price: number;
         version: number;
     };
