@@ -46,3 +46,4 @@ __exportStar(require("./src/types/order-status"), exports);
 __exportStar(require("./src/types/roles-type"), exports);
 __exportStar(require("./src/types/profile-picture-type"), exports);
 __exportStar(require("./src/types/cover-picture"), exports);
+__exportStar(require("./src/types/model-type"), exports);
