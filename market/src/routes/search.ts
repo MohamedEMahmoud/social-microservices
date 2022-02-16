@@ -11,13 +11,13 @@ router.get("/api/product/search",
             throw new BadRequestError("Search Query is Required");
         }
 
-        const products = await Product.find({ userId: req.currentUser!.id });
+        const products = await Product.find({ merchantId: req.currentUser!.id });
 
-        const productSearch = 
-        products.filter(product => 
-            (product.desc.toLowerCase().includes(search.toString().toLowerCase()) && product.price === Number(price))
-             || 
-             (product.desc.toLowerCase().includes(search.toString().toLowerCase()) || product.price === Number(price)));
+        const productSearch =
+            products.filter(product =>
+                (product.content.toLowerCase().includes(search.toString().toLowerCase()) && product.price === Number(price))
+                ||
+                (product.content.toLowerCase().includes(search.toString().toLowerCase()) || product.price === Number(price)));
 
         if (products.length === 0 || productSearch.length === 0) {
             throw new BadRequestError("Products Not Found");
