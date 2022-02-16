@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-
+import { ModelType } from "@mesocial/common";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 interface PostAttrs {
     author: string;
     images?: { id: string, URL: string; }[];
@@ -13,6 +14,7 @@ interface PostDoc extends mongoose.Document {
     content: string;
     likes: string[];
     type: string;
+    version: number;
     created_at: string;
     updated_at: string;
 }
@@ -23,7 +25,8 @@ interface PostModel extends mongoose.Model<PostDoc> {
 
 const postSchema = new mongoose.Schema({
     author: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true,
     },
     images: {
@@ -42,7 +45,11 @@ const postSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        default: "Post"
+        default: ModelType.Post
+    },
+    comments: {
+        type: Array,
+        default: []
     }
 
 }, {
@@ -53,11 +60,13 @@ const postSchema = new mongoose.Schema({
         }
     },
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
-    versionKey: false,
 });
 
-postSchema.statics.build = (attrs: PostAttrs) => new Post(attrs);
+postSchema.set("versionKey", "version");
 
+postSchema.plugin(updateIfCurrentPlugin);
+
+postSchema.statics.build = (attrs: PostAttrs) => new Post(attrs);
 
 const Post = mongoose.model<PostDoc, PostModel>("Post", postSchema);
 
