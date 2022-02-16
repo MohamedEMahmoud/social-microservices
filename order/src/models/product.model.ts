@@ -4,19 +4,20 @@ import { Order, OrderStatus } from "./order.model";
 interface ProductAttrs {
     id: string;
     images?: { id: string, URL: string; }[];
-    desc?: string;
+    content?: string;
     price: number;
 }
 
 interface ProductDoc extends mongoose.Document {
     id: string;
     images: { id: string, URL: string; }[];
-    desc: string;
+    content: string;
     type: string;
     version: number;
     price: number;
+    created_at: string;
+    updated_at: string;
     isReserved(): Promise<boolean>;
-
 }
 
 interface ProductModel extends mongoose.Model<ProductDoc> {
@@ -28,7 +29,7 @@ const productSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
-    desc: {
+    content: {
         type: String,
         min: 1,
         max: 100,
