@@ -4,7 +4,8 @@ import { User } from "../models/user.model";
 import { v2 as Cloudinary } from "cloudinary";
 import { Password } from "../services/Password";
 import _ from "lodash";
-
+import { natsWrapper } from "../nats-wrapper";
+import { UserUpdatedPublisher } from "../events/publishers/user-updated-publisher";
 const router = express.Router();
 
 router.patch("/api/auth/user",
@@ -115,6 +116,16 @@ router.patch("/api/auth/user",
         user.updatedAt = new Date().toISOString();
         _.extend(user, req.body);
         await user.save();
+
+        await new UserUpdatedPublisher(natsWrapper.client).publish({
+            id: user.id,
+            email: user.email,
+            username: user.username,
+            profilePicture: user.profilePicture,
+            coverPicture: user.coverPicture,
+            roles: user.roles,
+            version: user.version
+        });
 
         res.status(200).send({ status: 200, user, success: true });
     });
