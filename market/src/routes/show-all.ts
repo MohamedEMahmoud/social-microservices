@@ -7,7 +7,7 @@ router.get("/api/product/all",
     requireAuth,
     async (req: Request, res: Response) => {
 
-        const products = await Product.find({ userId: req.currentUser!.id });
+        const products = await Product.find({ merchantId: req.currentUser!.id });
         if (products.length === 0) {
             throw new BadRequestError("Products Not Found");
         }
