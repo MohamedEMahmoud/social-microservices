@@ -23,7 +23,7 @@ import app from "./app";
         await natsWrapper.connect(process.env.NATS_CLUSTER_ID!, process.env.NATS_CLIENT_ID!, process.env.NATS_URL!);
 
         natsWrapper.client.on("close", () => {
-            console.log("NATS Connection Closed! From Order Service");
+            console.log("NATS Connection Closed! From Payment Service");
             process.exit();
         });
 
