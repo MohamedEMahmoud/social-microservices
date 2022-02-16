@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comment-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comment
+  template:
+    metadata:
+      labels:
+        app: comment
+    spec:
+      containers:
+        - name: comment
+          image: mohamedemad1/comment
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret-social
+                  key: JWT_KEY
+            - name: MONGO_URI
+              value: mongodb://comment-mongo-cluster-ip-service:27017/comment
+            - name: CLOUDINARY_NAME
+              value: micro-services
+            - name: CLOUDINARY_API_KEY
+              value: "467668724553657"
+            - name: CLOUDINARY_API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: cloudinary-api-secret-social
+                  key: CLOUDINARY_API_SECRET
+            - name: NATS_CLUSTER_ID
+              value: social
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: http://nats-cluster-ip-service:4222
