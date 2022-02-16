@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { validateRequest, BadRequestError, validateImage, upload } from "@mesocial/common";
+import { validateRequest, BadRequestError, validateImage, upload, GenderType, ProfilePictureType } from "@mesocial/common";
 import { User } from "../models/user.model";
 import jwt from "jsonwebtoken";
 import { v2 as Cloudinary } from "cloudinary";
@@ -7,7 +7,8 @@ import address from "address";
 import { OAuth2Client } from "google-auth-library";
 import nodemailer, { TransportOptions } from "nodemailer";
 import { randomBytes } from "crypto";
-
+import { UserCreatedPublisher } from "../events/publishers/user-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 const router = express.Router();
 
 router.post("/api/auth/signup",
@@ -57,6 +58,12 @@ router.post("/api/auth/signup",
                     }
                 }).end(files.profilePicture[0].buffer);
             });
+        } else {
+            if (user.gender === GenderType.Male) {
+                user.profilePicture = ProfilePictureType.Male;
+            } else {
+                user.profilePicture = ProfilePictureType.Female;
+            }
         }
 
         if (files.coverPicture) {
@@ -150,6 +157,19 @@ router.post("/api/auth/signup",
             } else {
                 user.activeKey = activeKey;
                 await user.save();
+
+                await new UserCreatedPublisher(natsWrapper.client).publish({
+                    id: user.id,
+                    email: user.email,
+                    username: user.username,
+                    profilePicture: user.profilePicture,
+                    coverPicture: user.coverPicture,
+                    roles: user.roles,
+                    followers: user.followers,
+                    followings: user.followings,
+                    version: user.version
+                });
+
                 res.status(201).send({ status: 201, user, success: true });
             }
         });
