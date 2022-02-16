@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/api/order", requireAuth, async (req: Request, res: Response) => {
 
-    const order = await Order.find({ userId: req.currentUser!.id }).populate("product");
+    const order = await Order.find({ buyerId: req.currentUser!.id }).populate("product");
     res.status(200).send({ status: 200, order, success: true });
 
 });
