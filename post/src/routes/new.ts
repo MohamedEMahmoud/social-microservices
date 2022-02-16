@@ -14,8 +14,8 @@ router.post("/api/post",
         const files = req.files as { [fieldname: string]: Express.Multer.File[]; };
 
         const post = Post.build({
-            userId: req.currentUser!.id,
-            desc: req.body.desc,
+            author: req.currentUser!.id,
+            content: req.body.content,
         });
 
         if (files.images) {
@@ -23,7 +23,7 @@ router.post("/api/post",
                 files.images.map(image => {
                     const imageId = randomBytes(16).toString("hex");
                     return Cloudinary.uploader.upload_stream({
-                        public_id: `post-image/${imageId}-${image.originalname}/social-${post.userId}`,
+                        public_id: `post-image/${imageId}-${image.originalname}/social-${post.author}`,
                         use_filename: true,
                         tags: `${imageId}-tag`,
                         width: 500,

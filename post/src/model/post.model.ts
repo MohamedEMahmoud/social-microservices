@@ -1,18 +1,20 @@
 import mongoose from "mongoose";
 
 interface PostAttrs {
-    userId: string;
+    author: string;
     images?: { id: string, URL: string; }[];
-    desc?: string;
+    content?: string;
     likes?: string[];
 }
 
 interface PostDoc extends mongoose.Document {
-    userId: string;
+    author: string;
     images: { id: string, URL: string; }[];
-    desc: string;
+    content: string;
     likes: string[];
     type: string;
+    created_at: string;
+    updated_at: string;
 }
 
 interface PostModel extends mongoose.Model<PostDoc> {
@@ -20,7 +22,7 @@ interface PostModel extends mongoose.Model<PostDoc> {
 }
 
 const postSchema = new mongoose.Schema({
-    userId: {
+    author: {
         type: String,
         required: true,
     },
@@ -28,7 +30,7 @@ const postSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
-    desc: {
+    content: {
         type: String,
         min: 1,
         max: 100,

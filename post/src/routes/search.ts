@@ -12,9 +12,9 @@ router.get("/api/post/search",
             throw new BadRequestError("Search Query is Required");
         }
 
-        const posts = await Post.find({ userId: req.currentUser!.id });
+        const posts = await Post.find({ author: req.currentUser!.id });
 
-        const postSearch = posts.filter(product => product.desc.toLowerCase().includes(search.toString().toLowerCase()));
+        const postSearch = posts.filter(product => product.content.toLowerCase().includes(search.toString().toLowerCase()));
 
         if (posts.length === 0 || postSearch.length === 0) {
             throw new BadRequestError("Posts Not Found");

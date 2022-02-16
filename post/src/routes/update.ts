@@ -25,7 +25,7 @@ router.patch("/api/post",
                 files.images.map(image => {
                     const imageId = randomBytes(16).toString("hex");
                     return Cloudinary.uploader.upload_stream({
-                        public_id: `post-image/${imageId}-${image.originalname}/social-${post.userId}`,
+                        public_id: `post-image/${imageId}-${image.originalname}/social-${post.author}`,
                         use_filename: true,
                         tags: `${imageId}-tag`,
                         width: 500,

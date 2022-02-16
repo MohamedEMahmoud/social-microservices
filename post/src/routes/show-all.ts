@@ -7,7 +7,7 @@ router.get("/api/post/all",
     requireAuth,
     async (req: Request, res: Response) => {
 
-        const posts = await Post.find({ userId: req.currentUser!.id });
+        const posts = await Post.find({ author: req.currentUser!.id });
         if (posts.length === 0) {
             throw new BadRequestError("Posts Not Found");
         }

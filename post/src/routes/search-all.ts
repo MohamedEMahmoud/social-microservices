@@ -14,7 +14,7 @@ router.get("/api/post/search-all",
 
         const posts = await Post.find({});
 
-        const postSearch = posts.filter(product => product.desc.toLowerCase().includes(search.toString().toLowerCase()));
+        const postSearch = posts.filter(product => product.content.toLowerCase().includes(search.toString().toLowerCase()));
 
         if (posts.length === 0 || postSearch.length === 0) {
             throw new BadRequestError("Posts Not Found");

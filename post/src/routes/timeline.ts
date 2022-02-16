@@ -8,7 +8,7 @@ router.get("/api/post/timeline",
     requireAuth,
     async (req: Request, res: Response) => {
 
-        const posts = await Post.find({ userId: req.currentUser!.id });
+        const posts = await Post.find({ author: req.currentUser!.id });
         if (posts.length === 0) {
             throw new BadRequestError("Posts Not Found");
         }
@@ -16,7 +16,7 @@ router.get("/api/post/timeline",
         // todo: waiting to publish data from followings route and listen to show followings posts
         // const followingsPosts = await Promise.all(
         //     currentUser.followings.map((friendId) => {
-        //       return Post.find({ userId: friendId });
+        //       return Post.find({ author: friendId });
         //     })
         //   );
         //   res.json(userPosts.concat(...followingsPosts))
