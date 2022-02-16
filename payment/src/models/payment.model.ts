@@ -8,6 +8,8 @@ interface PaymentAttrs {
 interface PaymentDoc extends mongoose.Document {
     orderId: string;
     stripeId: string;
+    created_at: string;
+    updated_at: string;
 }
 
 interface PaymentModel extends mongoose.Model<PaymentDoc> {
