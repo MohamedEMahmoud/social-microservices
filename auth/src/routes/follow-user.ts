@@ -1,6 +1,8 @@
 import express, { Request, Response } from "express";
 import { requireAuth, BadRequestError } from "@mesocial/common";
 import { User } from "../models/user.model";
+import { FollowCreatedPublisher } from "../events/publishers/follow-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -20,6 +22,13 @@ router.patch("/api/auth/user/follow",
 
         // todo: publish user data to timeline rout in post service
 
+        await new FollowCreatedPublisher(natsWrapper.client).publish({
+            id: currentUser!.id,
+            follower: currentUser!.id,
+            currentUserVersion: currentUser!.version,
+            following: user.id,
+            userVersion: user.version,
+        });
 
 
         res.status(200).send({ status: 200, currentUser, success: true });
