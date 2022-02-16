@@ -4,6 +4,8 @@ import { Product } from "../model/product.model";
 import { v2 as Cloudinary } from "cloudinary";
 import _ from "lodash";
 import { randomBytes } from "crypto";
+import { natsWrapper } from "../nats-wrapper";
+import { ProductUpdatedPublisher } from "../events/publishers/product-updated-publisher";
 
 const router = express.Router();
 
@@ -24,7 +26,7 @@ router.patch("/api/product",
             throw new BadRequestError("Cannot edit a reserved product");
         }
 
-        if (product.userId !== req.currentUser!.id) {
+        if (product.merchantId !== req.currentUser!.id) {
             throw new NotAuthorizedError();
         }
 
@@ -33,7 +35,7 @@ router.patch("/api/product",
                 files.images.map(async image => {
                     const imageId = randomBytes(16).toString("hex");
                     return Cloudinary.uploader.upload_stream({
-                        public_id: `product-image/${imageId}-${image.originalname}/social-${product.userId}`,
+                        public_id: `product-image/${imageId}-${image.originalname}/social-${product.merchantId}`,
                         use_filename: true,
                         tags: `${imageId}-tag`,
                         width: 500,
@@ -63,6 +65,16 @@ router.patch("/api/product",
         _.extend(product, req.body);
 
         await product.save();
+
+        await new ProductUpdatedPublisher(natsWrapper.client).publish({
+            id: product.id,
+            merchantId: product.merchantId,
+            images: product.images,
+            content: product.content,
+            price: product.price,
+            version: product.version
+        });
+
         res.status(200).send({ status: 200, product, success: true });
 
     });
