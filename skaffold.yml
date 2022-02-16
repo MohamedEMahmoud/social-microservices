@@ -56,3 +56,19 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+    - image: mohamedemad1/comment
+      context: comment
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+    - image: mohamedemad1/reply
+      context: reply
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
