@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reply-mongo-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reply-mongo
+  template:
+    metadata:
+      labels:
+        app: reply-mongo
+    spec:
+      containers:
+        - name: reply-mongo
+          image: mongo
