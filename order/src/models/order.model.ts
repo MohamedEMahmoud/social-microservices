@@ -4,18 +4,20 @@ import { OrderStatus } from "@mesocial/common";
 import { ProductDoc } from "./product.model";
 
 interface OrderAttrs {
-    userId: string;
+    buyerId: string;
     expiresAt: string;
     status: OrderStatus;
     product: ProductDoc;
 }
 
 interface OrderDoc extends mongoose.Document {
-    userId: string;
+    buyerId: string;
     expiresAt: string;
     status: OrderStatus;
     product: ProductDoc;
     version: number;
+    created_at: string;
+    updated_at: string;
 }
 
 interface OrderModel extends mongoose.Model<OrderDoc> {
@@ -23,7 +25,7 @@ interface OrderModel extends mongoose.Model<OrderDoc> {
 }
 
 const orderSchema = new mongoose.Schema({
-    userId: {
+    buyerId: {
         type: String,
         required: true
     },
