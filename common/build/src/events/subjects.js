@@ -8,7 +8,7 @@ var Subjects;
     Subjects["UserDeleted"] = "user:deleted";
     Subjects["UserFollow"] = "user:follow";
     Subjects["UserUnFollow"] = "user:unfollow";
-    Subjects["UserBan"] = "user:ban";
+    Subjects["BanCreated"] = "ban:created";
     Subjects["ProductCreated"] = "product:create";
     Subjects["ProductUpdated"] = "product:updated";
     Subjects["OrderCreated"] = "order:created";
