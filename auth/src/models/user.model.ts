@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { GenderType } from "@mesocial/common";
+import { GenderType, RolesType, CoverPicture } from "@mesocial/common";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { Password } from "../services/Password";
 
@@ -13,7 +13,7 @@ interface UserAttrs {
     description?: string;
     city?: string;
     from?: string;
-    isAdmin?: boolean;
+    roles?: RolesType;
     macAddress: { MAC: string; }[];
     activeKey: string;
     active?: boolean;
@@ -33,7 +33,7 @@ interface UserDoc extends mongoose.Document {
     description: string;
     city: string;
     from: string;
-    isAdmin: boolean;
+    roles: RolesType;
     macAddress: { MAC: String; }[];
     ban: { id: string; period: string; reason: string; end_in: string; }[];
     hasAccess: boolean;
@@ -44,6 +44,8 @@ interface UserDoc extends mongoose.Document {
     active: boolean;
     resetPasswordKey: string;
     resetPasswordExpires: string;
+    created_at: string;
+    updated_at: string;
 }
 
 interface UserModel extends mongoose.Model<UserDoc> {
@@ -77,15 +79,13 @@ const userSchema = new mongoose.Schema({
         trim: true,
         lowercase: true,
         enum: Object.values(GenderType),
-        default: ""
     },
     profilePicture: {
         type: String,
-        default: ""
     },
     coverPicture: {
         type: String,
-        default: ""
+        default: CoverPicture.Default
     },
     followers: {
         type: Array,
@@ -107,9 +107,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         max: 50
     },
-    isAdmin: {
-        type: Boolean,
-        default: false,
+    roles: {
+        type: String,
+        required: true,
+        enum: Object.values(RolesType),
+        default: RolesType.User
     },
     macAddress: {
         type: Array
