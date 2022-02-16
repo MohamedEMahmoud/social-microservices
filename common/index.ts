@@ -40,3 +40,4 @@ export * from "./src/types/order-status";
 export * from "./src/types/roles-type";
 export * from "./src/types/profile-picture-type";
 export * from "./src/types/cover-picture";
+export * from "./src/types/model-type";
