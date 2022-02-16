@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import { Order, OrderStatus } from "../models/order.model";
 import { Product } from "../models/product.model";
 import { BadRequestError, requireAuth } from "@mesocial/common";
+import { natsWrapper } from "../nats-wrapper";
+import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
 const router = express.Router();
 
 router.post("/api/order", requireAuth, async (req: Request, res: Response) => {
@@ -28,13 +30,22 @@ router.post("/api/order", requireAuth, async (req: Request, res: Response) => {
 
     const expires = Date.now() + Number(process.env.EXPIRATION_WINDOW_MILLIE_SECOND!); // 1 hour
     const order = Order.build({
-        userId: req.currentUser!.id,
+        buyerId: req.currentUser!.id,
         status: OrderStatus.created,
         expiresAt: new Date(expires).toISOString(),
         product
     });
 
     await order.save();
+
+    await new OrderCreatedPublisher(natsWrapper.client).publish({
+        id: order.id,
+        buyerId: order.buyerId,
+        status: order.status,
+        expiresAt: order.expiresAt,
+        version: order.version,
+        product
+    });
 
     res.status(201).send({ status: 200, order, success: true });
 
