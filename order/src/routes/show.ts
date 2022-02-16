@@ -21,7 +21,7 @@ router.get("/api/order", requireAuth, async (req: Request, res: Response) => {
         throw new BadRequestError("Order Not Found");
     }
 
-    if (order.userId !== req.currentUser!.id) {
+    if (order.buyerId !== req.currentUser!.id) {
         throw new NotAuthorizedError();
     }
 
