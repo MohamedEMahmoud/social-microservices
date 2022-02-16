@@ -25,3 +25,11 @@ spec:
               value: mongodb://order-mongo-cluster-ip-service:27017/order
             - name: EXPIRATION_WINDOW_MILLIE_SECOND
               value: "3600000"
+            - name: NATS_CLUSTER_ID
+              value: social
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: http://nats-cluster-ip-service:4222

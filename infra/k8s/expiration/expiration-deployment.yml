@@ -18,3 +18,11 @@ spec:
           env:
             - name: REDIS_HOST
               value: expiration-redis-cluster-ip-service
+            - name: NATS_CLUSTER_ID
+              value: social
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: http://nats-cluster-ip-service:4222
