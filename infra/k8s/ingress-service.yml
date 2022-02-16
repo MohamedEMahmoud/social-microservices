@@ -49,3 +49,17 @@ spec:
                 name: payment-cluster-ip-service
                 port:
                   number: 3000
+          - path: /api/comment/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: comment-cluster-ip-service
+                port:
+                  number: 3000
+          - path: /api/reply/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: reply-cluster-ip-service
+                port:
+                  number: 3000
