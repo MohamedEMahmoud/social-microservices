@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
+import { ModelType } from "@mesocial/common";
 interface ProductAttrs {
     merchantId: string;
     images?: { id: string, URL: string; }[];
@@ -51,10 +52,14 @@ const productSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        default: "Product"
+        default: ModelType.Product
     },
     orderId: {
         type: String
+    },
+    comments: {
+        type: Array,
+        default: []
     }
 
 }, {
