@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import { v2 as Cloudinary } from "cloudinary";
+import { natsWrapper } from "./nats-wrapper";
 import app from "./app";
+import { ExpirationBanListener } from "./events/listeners/expiration-ban-listener";
 (async () => {
     const Environment = [
         "MONGO_URI",
@@ -15,7 +17,10 @@ import app from "./app";
         "CLIENT_SECRET",
         "REFRESH_TOKEN",
         "REDIRECT_URI",
-        "EXPIRATION_WINDOW_MILLIE_SECOND"
+        "EXPIRATION_WINDOW_MILLIE_SECOND",
+        "NATS_CLUSTER_ID",
+        "NATS_CLIENT_ID",
+        "NATS_URL"
     ];
     Environment.forEach(el => {
         if (!process.env[el]) {
@@ -23,6 +28,19 @@ import app from "./app";
         }
     });
     try {
+
+        await natsWrapper.connect(process.env.NATS_CLUSTER_ID!, process.env.NATS_CLIENT_ID!, process.env.NATS_URL!);
+
+        natsWrapper.client.on("close", () => {
+            console.log("NATS Connection Closed! From Auth Service");
+            process.exit();
+        });
+
+        natsWrapper.client.on("SIGINT", () => natsWrapper.client.close());
+        natsWrapper.client.on("SIGTERM", () => natsWrapper.client.close());
+
+        new ExpirationBanListener(natsWrapper.client).listen();
+
         await mongoose.connect(process.env.MONGO_URI!, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
