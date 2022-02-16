@@ -10,7 +10,7 @@ router.get("/api/auth/admin",
 
         const user = await User.findById(req.currentUser!.id);
 
-        if (!user?.isAdmin) {
+        if (user?.roles !== "admin") {
             throw new BadRequestError("User have no this permission");
         }
 
@@ -19,7 +19,7 @@ router.get("/api/auth/admin",
         if (users.length === 0) {
             throw new BadRequestError("No Users found");
         }
-        const filterUsers = users.filter(el => !el.isAdmin);
+        const filterUsers = users.filter(el => el.roles !== "admin");
         
         res.status(200).send({ status: 200, users: filterUsers, success: true });
 
