@@ -11,21 +11,26 @@ router.delete("/api/auth/admin/ban",
 
         const user = await User.findById(req.currentUser!.id);
 
-        if (!user?.isAdmin) {
+        if (user?.roles !== "admin") {
             throw new BadRequestError("User have no this permission");
         }
 
-        if (!req.query.id || !mongoose.Types.ObjectId.isValid(String(req.query.id))) {
-            throw new BadRequestError("Id Is Invalid");
+        const { id, banId } = req.query;
+        const { isValid } = mongoose.Types.ObjectId;
+
+        if (!id || !isValid(String(id)) || !banId || !isValid(String(banId))) {
+            for (let i in req.query) {
+                throw new BadRequestError(`${req.query[i]} Is Invalid`);
+            }
         }
 
-        const existingUser = await User.findById(req.query.id);
+        const existingUser = await User.findById(id);
 
         if (!existingUser) {
             throw new BadRequestError("User no longer exists");
         }
 
-        existingUser.ban = existingUser.ban.filter(el => el.id !== req.query.banId);
+        existingUser.ban = existingUser.ban.filter(el => el.id !== banId);
 
         if (existingUser.ban.length === 0) {
             existingUser.hasAccess = true;
