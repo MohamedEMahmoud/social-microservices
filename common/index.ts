@@ -32,7 +32,7 @@ export * from "./src/events/user-updated-event";
 export * from "./src/events/user-deleted-event";
 export * from "./src/events/follow-created-event";
 export * from "./src/events/unfollow-created-event";
-export * from "./src/events/ban-created-event";
+export * from "./src/events/admin-created-ban-event";
 
 // Export Types
 export * from "./src/types/gender-type";
