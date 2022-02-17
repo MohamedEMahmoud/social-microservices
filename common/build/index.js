@@ -39,7 +39,7 @@ __exportStar(require("./src/events/user-updated-event"), exports);
 __exportStar(require("./src/events/user-deleted-event"), exports);
 __exportStar(require("./src/events/follow-created-event"), exports);
 __exportStar(require("./src/events/unfollow-created-event"), exports);
-__exportStar(require("./src/events/ban-created-event"), exports);
+__exportStar(require("./src/events/admin-created-ban-event"), exports);
 // Export Types
 __exportStar(require("./src/types/gender-type"), exports);
 __exportStar(require("./src/types/order-status"), exports);

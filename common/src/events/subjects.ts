@@ -7,8 +7,6 @@ export enum Subjects {
     UserUnFollow = "user:unfollow",
 
     AdminCreatedBan = "admin:created:ban",
-    AdminDeletedBan = "admin:deleted:ban",
-    AdminDeletedUser = "admin:deleted:user",
 
     ProductCreated = "product:create",
     ProductUpdated = "product:updated",

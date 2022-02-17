@@ -8,9 +8,6 @@ export interface UserCreatedEvent {
         username: string;
         profilePicture: string;
         coverPicture: string;
-        roles: string;
-        followers: [];
-        followings: [];
         version: number;
     };
 }
