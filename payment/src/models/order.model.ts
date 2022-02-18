@@ -56,7 +56,7 @@ orderSchema.plugin(updateIfCurrentPlugin);
 
 orderSchema.statics.build = (attrs: OrderAttrs) => new Order({ _id: attrs.id, ...attrs });
 
-orderSchema.statics.findByEvent = (event: { id: string, version: number; }) => {
+orderSchema.statics.findByEvent = (event: { id: string; version: number; }) => {
     return Order.findOne({
         _id: event.id,
         version: event.version - 1
