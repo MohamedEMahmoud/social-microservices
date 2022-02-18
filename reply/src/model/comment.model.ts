@@ -35,21 +35,10 @@ const commentSchema = new mongoose.Schema({
     product: {
         type: String,
     },
-    media: {
-        type: Array,
-        default: []
-    },
-    content: {
-        type: String,
-        min: 1,
-        max: 100,
-        trim: true,
-    },
     replies: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Reply"
     }
-
 }, {
     toJSON: {
         transform(doc, ret) {
