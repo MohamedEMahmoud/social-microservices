@@ -1,4 +1,4 @@
-import { BanCreatedListener } from "./events/listeners/ban-created-listener";
+import { AdminCreatedBanListener } from "./events/listeners/admin-created-ban-listener";
 import { OrderCreatedListener } from "./events/listeners/order-created-listener";
 import { natsWrapper } from "./nats-wrapper";
 (async () => {
@@ -28,7 +28,7 @@ import { natsWrapper } from "./nats-wrapper";
         natsWrapper.client.on("SIGTERM", () => natsWrapper.client.close());
 
         new OrderCreatedListener(natsWrapper.client).listen();
-        new BanCreatedListener(natsWrapper.client).listen();
+        new AdminCreatedBanListener(natsWrapper.client).listen();
 
     } catch (err) {
         console.error(err);
