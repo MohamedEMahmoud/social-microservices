@@ -2,7 +2,11 @@ import mongoose from "mongoose";
 import { v2 as Cloudinary } from "cloudinary";
 import { natsWrapper } from "./nats-wrapper";
 import app from "./app";
-
+import { UserCreatedListener } from "./events/listeners/user-created-listener";
+import { UserUpdatedListener } from "./events/listeners/user-updated-listener";
+import { UserDeletedListener } from "./events/listeners/user-deleted-listener";
+import { FollowCreatedListener } from "./events/listeners/follow-created-listener";
+import { UnFollowCreatedListener } from "./events/listeners/unfollow-created-listener";
 (async () => {
     const Environment = [
         "JWT_KEY",
@@ -29,6 +33,12 @@ import app from "./app";
 
         natsWrapper.client.on("SIGINT", () => natsWrapper.client.close());
         natsWrapper.client.on("SIGTERM", () => natsWrapper.client.close());
+
+        new UserCreatedListener(natsWrapper.client).listen();
+        new UserUpdatedListener(natsWrapper.client).listen();
+        new UserDeletedListener(natsWrapper.client).listen();
+        new FollowCreatedListener(natsWrapper.client).listen();
+        new UnFollowCreatedListener(natsWrapper.client).listen();
 
         await mongoose.connect(process.env.MONGO_URI!, {
             useNewUrlParser: true,

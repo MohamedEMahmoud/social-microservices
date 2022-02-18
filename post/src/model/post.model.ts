@@ -14,6 +14,7 @@ interface PostDoc extends mongoose.Document {
     content: string;
     likes: string[];
     type: string;
+    comments: string[];
     version: number;
     created_at: string;
     updated_at: string;
