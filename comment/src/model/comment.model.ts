@@ -7,7 +7,6 @@ interface CommentAttrs {
     media?: { id: string, URL: string; }[];
     post?: string;
     product?: string;
-    replies?: { userId: string; content: string; media: string; comment: string; }[];
 }
 
 interface CommentDoc extends mongoose.Document {
