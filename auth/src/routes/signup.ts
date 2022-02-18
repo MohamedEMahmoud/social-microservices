@@ -164,9 +164,6 @@ router.post("/api/auth/signup",
                     username: user.username,
                     profilePicture: user.profilePicture,
                     coverPicture: user.coverPicture,
-                    roles: user.roles,
-                    followers: user.followers,
-                    followings: user.followings,
                     version: user.version
                 });
 

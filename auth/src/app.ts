@@ -19,7 +19,7 @@ import { followUserRouter } from "./routes/follow-user";
 import { unfollowUserRouter } from "./routes/unfollow-user";
 import { adminListOfUsers } from "./routes/admin-list-of-users";
 import { adminDeleteUsers } from "./routes/admin-delete-users";
-import { adminBanUsers } from "./routes/admin-ban-users";
+import { adminCreateBan } from "./routes/admin-create-ban";
 import { adminDeleteBan } from "./routes/admin-delete-ban";
 
 
@@ -50,7 +50,7 @@ app.use([
     unfollowUserRouter,
     adminListOfUsers,
     adminDeleteUsers,
-    adminBanUsers,
+    adminCreateBan,
     adminDeleteBan,
 
 

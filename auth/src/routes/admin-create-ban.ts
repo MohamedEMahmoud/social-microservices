@@ -3,6 +3,9 @@ import { User } from "../models/user.model";
 import { requireAuth, BadRequestError, upload } from "@mesocial/common";
 import moment from "moment";
 import mongoose from "mongoose";
+import { AdminCreatedBanPublisher } from "../events/publishers/admin-created-ban-publisher";
+import { natsWrapper } from "../nats-wrapper";
+
 const router = express.Router();
 
 interface BanUser {
@@ -19,7 +22,7 @@ router.patch("/api/auth/admin/ban",
 
         const user = await User.findById(req.currentUser!.id);
 
-        if (!user?.isAdmin) {
+        if (user?.roles !== "admin") {
             throw new BadRequestError("User have no this permission");
         }
 
@@ -33,7 +36,7 @@ router.patch("/api/auth/admin/ban",
             throw new BadRequestError("User no longer exists");
         }
 
-        if (existingUser.isAdmin) {
+        if (existingUser.roles === "admin") {
             throw new BadRequestError("Admin User");
         }
 
@@ -53,15 +56,25 @@ router.patch("/api/auth/admin/ban",
         const ban = {
             period: req.body.period ? req.body.period : undefined,
             reason: req.body.reason,
-            end_in: req.body.period ? moment().add(num, <moment.unitOfTime.DurationConstructor>str).format() : undefined,
+            end_in: req.body.period ? moment().add(2, "m").format() : undefined, //num, <moment.unitOfTime.DurationConstructor>str
         } as BanUser;
 
         existingUser.ban.push(ban);
 
         await existingUser.save();
 
+        const { id, end_in } = existingUser.ban[existingUser.ban.length - 1];
+        if (end_in) {
+            await new AdminCreatedBanPublisher(natsWrapper.client).publish({
+                id: existingUser.id,
+                ban: {
+                    id,
+                    end_in
+                }
+            });
+        }
         res.status(200).send({ status: 200, existingUser, success: true });
 
     });
 
-export { router as adminBanUsers };
+export { router as adminCreateBan };

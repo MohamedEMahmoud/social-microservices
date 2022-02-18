@@ -37,8 +37,6 @@ interface UserDoc extends mongoose.Document {
     macAddress: { MAC: String; }[];
     ban: { id: string; period: string; reason: string; end_in: string; }[];
     hasAccess: boolean;
-    updatedAt: string;
-    createdAt: string;
     version: number;
     activeKey: string;
     active: boolean;

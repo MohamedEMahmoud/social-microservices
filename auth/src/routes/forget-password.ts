@@ -4,6 +4,8 @@ import { OAuth2Client } from "google-auth-library";
 import nodemailer, { TransportOptions } from "nodemailer";
 import { BadRequestError, upload } from "@mesocial/common";
 import { randomBytes } from "crypto";
+import { UserUpdatedPublisher } from "../events/publishers/user-updated-publisher";
+import { natsWrapper } from "../nats-wrapper";
 const router = express.Router();
 
 router.patch("/api/auth/forget", upload.none(), async (req: Request, res: Response) => {
@@ -66,9 +68,13 @@ router.patch("/api/auth/forget", upload.none(), async (req: Request, res: Respon
             const time = Date.now() + Number(process.env.EXPIRATION_WINDOW_MILLIE_SECOND!);
             user.resetPasswordExpires = new Date(time).toISOString();
             await user.save();
-            res
-                .status(200)
-                .send({ status: 200, user, message: "Email Sent", success: true });
+
+            await new UserUpdatedPublisher(natsWrapper.client).publish({
+                id: user.id,
+                version: user.version
+            });
+
+            res.status(200).send({ status: 200, user, message: "Email Sent", success: true });
         }
     });
 });

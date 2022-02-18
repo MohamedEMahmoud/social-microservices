@@ -2,6 +2,8 @@ import express, { Request, Response } from "express";
 import { User } from "../models/user.model";
 import { requireAuth, BadRequestError } from "@mesocial/common";
 import mongoose from "mongoose";
+import { UserUpdatedPublisher } from "../events/publishers/user-updated-publisher";
+import { natsWrapper } from "../nats-wrapper";
 const router = express.Router();
 
 
@@ -37,6 +39,11 @@ router.delete("/api/auth/admin/ban",
         }
 
         await existingUser.save();
+
+        await new UserUpdatedPublisher(natsWrapper.client).publish({
+            id: existingUser.id,
+            version: existingUser.version
+        });
 
         res.status(200).send({ status: 200, existingUser, success: true });
 

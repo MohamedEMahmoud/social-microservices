@@ -113,7 +113,7 @@ router.patch("/api/auth/user",
             });
         }
 
-        user.updatedAt = new Date().toISOString();
+        user.updated_at = new Date().toISOString();
         _.extend(user, req.body);
         await user.save();
 
@@ -123,7 +123,6 @@ router.patch("/api/auth/user",
             username: user.username,
             profilePicture: user.profilePicture,
             coverPicture: user.coverPicture,
-            roles: user.roles,
             version: user.version
         });
 

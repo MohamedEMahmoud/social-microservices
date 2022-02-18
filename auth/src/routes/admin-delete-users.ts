@@ -23,8 +23,12 @@ router.delete("/api/auth/admin",
 
         const deletedUser = await User.findByIdAndDelete(req.query.id);
 
+        if (!deletedUser) {
+            throw new BadRequestError("Invalid credentials");
+        }
+
         await new UserDeletedPublisher(natsWrapper.client).publish({
-            id: deletedUser!.id,
+            id: deletedUser.id,
         });
 
         res.status(204).send({});

@@ -5,7 +5,8 @@ import { BadRequestError, upload } from "@mesocial/common";
 import { Password } from "../services/Password";
 import address from "address";
 import moment from "moment";
-
+import { UserUpdatedPublisher } from "../events/publishers/user-updated-publisher";
+import { natsWrapper } from "../nats-wrapper";
 const router = express.Router();
 
 router.post('/api/auth/signin', upload.none(), async (req: Request, res: Response) => {
@@ -40,6 +41,8 @@ router.post('/api/auth/signin', upload.none(), async (req: Request, res: Respons
         jwt: userJwt
     };
 
+    let userAddressLength = user.macAddress.length;
+
     await address.mac((err, addr) => {
         if (err) {
             throw new BadRequestError("Can not reach to MAC Address");
@@ -52,6 +55,13 @@ router.post('/api/auth/signin', upload.none(), async (req: Request, res: Respons
             });
         }
     });
+
+    if (user.macAddress.length > userAddressLength) {
+        await new UserUpdatedPublisher(natsWrapper.client).publish({
+            id: user.id,
+            version: user.version
+        });
+    }
 
     res.status(200).send({ status: 200, user, success: true });
 
