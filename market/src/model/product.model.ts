@@ -17,6 +17,7 @@ interface ProductDoc extends mongoose.Document {
     price: number;
     type: string;
     version: number;
+    comments: string[];
     orderId: string;
     created_at: string;
     updated_at: string;
