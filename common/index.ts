@@ -33,6 +33,15 @@ export * from "./src/events/user-deleted-event";
 export * from "./src/events/follow-created-event";
 export * from "./src/events/unfollow-created-event";
 export * from "./src/events/admin-created-ban-event";
+export * from "./src/events/post-created-event";
+export * from "./src/events/post-updated-event";
+export * from "./src/events/post-deleted-event";
+export * from "./src/events/comment-created-event";
+export * from "./src/events/comment-updated-event";
+export * from "./src/events/comment-deleted-event";
+export * from "./src/events/reply-created-event";
+export * from "./src/events/reply-deleted-event";
+
 
 // Export Types
 export * from "./src/types/gender-type";

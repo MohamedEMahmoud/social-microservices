@@ -8,7 +8,18 @@ export enum Subjects {
 
     AdminCreatedBan = "admin:created:ban",
 
-    ProductCreated = "product:create",
+    PostCreated = "post:created",
+    PostUpdated = "post:updated",
+    PostDeleted = "post:deleted",
+
+    CommentCreated = "comment:created",
+    CommentUpdated = "comment:updated",
+    CommentDeleted = "comment:deleted",
+
+    ReplyCreated = "reply:created",
+    ReplyDeleted = "reply:deleted",
+
+    ProductCreated = "product:created",
     ProductUpdated = "product:updated",
 
     OrderCreated = "order:created",
