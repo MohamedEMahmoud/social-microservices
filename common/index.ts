@@ -22,6 +22,7 @@ export * from "./src/events/base-listener";
 export * from "./src/events/subjects";
 export * from "./src/events/product-created-event";
 export * from "./src/events/product-updated-event";
+export * from "./src/events/product-deleted-event";
 export * from "./src/events/order-created-event";
 export * from "./src/events/order-cancelled-event";
 export * from "./src/events/payment-created-event";
@@ -41,7 +42,6 @@ export * from "./src/events/comment-updated-event";
 export * from "./src/events/comment-deleted-event";
 export * from "./src/events/reply-created-event";
 export * from "./src/events/reply-deleted-event";
-
 
 // Export Types
 export * from "./src/types/gender-type";
