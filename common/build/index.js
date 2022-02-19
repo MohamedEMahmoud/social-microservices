@@ -40,6 +40,14 @@ __exportStar(require("./src/events/user-deleted-event"), exports);
 __exportStar(require("./src/events/follow-created-event"), exports);
 __exportStar(require("./src/events/unfollow-created-event"), exports);
 __exportStar(require("./src/events/admin-created-ban-event"), exports);
+__exportStar(require("./src/events/post-created-event"), exports);
+__exportStar(require("./src/events/post-updated-event"), exports);
+__exportStar(require("./src/events/post-deleted-event"), exports);
+__exportStar(require("./src/events/comment-created-event"), exports);
+__exportStar(require("./src/events/comment-updated-event"), exports);
+__exportStar(require("./src/events/comment-deleted-event"), exports);
+__exportStar(require("./src/events/reply-created-event"), exports);
+__exportStar(require("./src/events/reply-deleted-event"), exports);
 // Export Types
 __exportStar(require("./src/types/gender-type"), exports);
 __exportStar(require("./src/types/order-status"), exports);
