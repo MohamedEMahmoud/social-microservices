@@ -22,7 +22,6 @@ export * from "./src/events/base-listener";
 export * from "./src/events/subjects";
 export * from "./src/events/product-created-event";
 export * from "./src/events/product-updated-event";
-export * from "./src/events/product-deleted-event";
 export * from "./src/events/order-created-event";
 export * from "./src/events/order-cancelled-event";
 export * from "./src/events/payment-created-event";
