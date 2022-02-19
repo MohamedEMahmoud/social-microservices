@@ -19,7 +19,6 @@ var Subjects;
     Subjects["ReplyDeleted"] = "reply:deleted";
     Subjects["ProductCreated"] = "product:created";
     Subjects["ProductUpdated"] = "product:updated";
-    Subjects["ProductDeleted"] = "product:deleted";
     Subjects["OrderCreated"] = "order:created";
     Subjects["OrderCancelled"] = "order:cancelled";
     Subjects["PaymentCreated"] = "payment:created";
