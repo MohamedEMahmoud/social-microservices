@@ -5,8 +5,8 @@ export interface CommentCreatedEvent {
     data: {
         id: string;
         userId: string;
-        post?: string;
-        product?: string;
+        postId?: string;
+        productId?: string;
         version: number;
     };
 }

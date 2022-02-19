@@ -4,6 +4,6 @@ export interface ReplyCreatedEvent {
     subject: Subjects.ReplyCreated;
     data: {
         id: string;
-        comment: string;
+        commentId: string;
     };
 }

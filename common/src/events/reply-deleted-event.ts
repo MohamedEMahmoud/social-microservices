@@ -4,6 +4,6 @@ export interface ReplyDeletedEvent {
     subject: Subjects.ReplyDeleted;
     data: {
         id: string;
-        comment: string;
+        commentId: string;
     };
 }
