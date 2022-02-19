@@ -4,7 +4,7 @@ export interface PostUpdatedEvent {
     subject: Subjects.PostUpdated;
     data: {
         id: string;
-        comment: string;
+        comment?: string;
         version: number;
     };
 }
