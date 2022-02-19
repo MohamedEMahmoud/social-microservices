@@ -29,7 +29,6 @@ __exportStar(require("./src/events/base-listener"), exports);
 __exportStar(require("./src/events/subjects"), exports);
 __exportStar(require("./src/events/product-created-event"), exports);
 __exportStar(require("./src/events/product-updated-event"), exports);
-__exportStar(require("./src/events/product-deleted-event"), exports);
 __exportStar(require("./src/events/order-created-event"), exports);
 __exportStar(require("./src/events/order-cancelled-event"), exports);
 __exportStar(require("./src/events/payment-created-event"), exports);
