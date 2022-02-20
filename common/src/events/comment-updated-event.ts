@@ -5,6 +5,7 @@ export interface CommentUpdatedEvent {
     data: {
         id: string;
         replyId?: string;
+        replyArrayLength?: number;
         version: number;
     };
 }

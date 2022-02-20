@@ -8,6 +8,8 @@ export interface ProductUpdatedEvent {
         images?: { id: string, URL: string; }[],
         content?: string;
         price?: number;
+        commentId?: string;
+        commentArrayLength?: number;
         version: number;
         orderId?: string;
     };

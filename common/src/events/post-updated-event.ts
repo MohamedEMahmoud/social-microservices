@@ -5,6 +5,7 @@ export interface PostUpdatedEvent {
     data: {
         id: string;
         commentId?: string;
+        commentArrayLength?: number;
         version: number;
     };
 }
