@@ -20,7 +20,7 @@ router.patch("/api/auth/resend", async (req: Request, res: Response) => {
     );
     client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
     const accessToken = await client.getAccessToken();
-    const resendKey = randomBytes(8).toString("hex");
+    const resendKey = randomBytes(8).toString("hex").toLowerCase();
     let transport = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: process.env.MAIL_SERVER_PORT,

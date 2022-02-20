@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { requireAuth, BadRequestError, ModelType } from "@mesocial/common";
-import { Post } from "../model/post.model";
-import { Product } from "../model/product.model";
+import { Post } from "../models/post.model";
+import { Product } from "../models/product.model";
 import mongoose from "mongoose";
 
 const router = express.Router();
@@ -21,13 +21,13 @@ router.get("/api/comment-all",
 
         if (req.query.type === ModelType.Post) {
 
-            data = await Post.findById(req.query.id).populate("comment");
+            data = await Post.findById(req.query.id).populate("comments");
 
             return res.status(200).send({ status: 200, post: data, success: true });
 
         } else if (req.query.type === ModelType.Product) {
 
-            data = await Product.findById(req.query.id).populate("comment");
+            data = await Product.findById(req.query.id).populate("comments");
 
             return res.status(200).send({ status: 200, product: data, success: true });
 

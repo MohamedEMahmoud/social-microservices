@@ -133,6 +133,8 @@ const userSchema = new mongoose.Schema({
     },
     activeKey: {
         type: String,
+        trim: true,
+        lowercase: true,
     },
     active: {
         type: Boolean,
@@ -140,6 +142,8 @@ const userSchema = new mongoose.Schema({
     },
     resetPasswordKey: {
         type: String,
+        trim: true,
+        lowercase: true,
     },
     resetPasswordExpires: {
         type: String,

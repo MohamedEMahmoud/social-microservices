@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { requireAuth, BadRequestError } from "@mesocial/common";
-import { Post } from "../model/post.model";
+import { Post } from "../models/post.model";
 const router = express.Router();
 
 router.get("/api/post/search",

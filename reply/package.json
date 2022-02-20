@@ -19,7 +19,7 @@
     "author": "MohamedEMahmoud",
     "license": "ISC",
     "dependencies": {
-        "@mesocial/common": "^1.0.44",
+        "@mesocial/common": "^1.0.61",
         "@types/cookie-session": "^2.0.44",
         "@types/express": "^4.17.13",
         "@types/lodash": "^4.14.178",

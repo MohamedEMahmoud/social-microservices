@@ -10,6 +10,7 @@ import { updateCommentRouter } from "./routes/update";
 import { deleteCommentRouter } from "./routes/delete";
 import { showCommentByUserIdRouter } from "./routes/show-by-userId";
 import { showAllCommentRouter } from "./routes/show-all";
+
 const app = express();
 
 app.set("trust proxy", true);
@@ -27,7 +28,7 @@ app.use([
     updateCommentRouter,
     deleteCommentRouter,
     showCommentByUserIdRouter,
-    showAllCommentRouter
+    showAllCommentRouter,
 
 ]);
 

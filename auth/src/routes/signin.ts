@@ -12,15 +12,23 @@ const router = express.Router();
 router.post('/api/auth/signin', upload.none(), async (req: Request, res: Response) => {
 
     const user = await User.findOne({ email: req.body.email });
+
     if (!user) {
         throw new BadRequestError("Invalid credentials");
     }
 
     if (!user.hasAccess) {
+        user.ban = user.ban.filter(el => new Date(el.end_in) > new Date());
+
+        if (user.ban.length === 0) {
+            user.hasAccess = true;
+        }
+        await user.save();
+
         await Promise.all(
             user.ban.map(userBan => {
                 if (userBan.end_in && (new Date(userBan.end_in) === new Date() || new Date(userBan.end_in) > new Date())) {
-                    throw new BadRequestError(`${user.email} is ban and reason ${userBan.reason} to ${moment(userBan.end_in).format('DD/MM/YYYY')} time left in ${moment(userBan.end_in, 'YYYY.MM.DD').fromNow()}`);
+                    throw new BadRequestError(`${user.email} is banned and the reason is that the ${userBan.reason} until ${moment(userBan.end_in).format('DD/MM/YYYY')} the ban is removed ${moment(userBan.end_in).fromNow()}`);
                 }
                 if (!userBan.end_in) {
                     throw new BadRequestError(`${user.email} is ban forever and reason ${userBan.reason}`);

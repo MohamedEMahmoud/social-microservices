@@ -6,7 +6,7 @@ interface CommentAttrs {
     userId: string;
     post?: string;
     product?: string;
-    replies: { userId: string; content: string; media: string; comment: string; }[];
+    version: number;
 }
 
 interface CommentDoc extends mongoose.Document {
@@ -14,7 +14,7 @@ interface CommentDoc extends mongoose.Document {
     media: { id: string, URL: string; }[];
     post: string;
     product: string;
-    replies: { userId: string; content: string; media: string; comment: string; }[];
+    replies: string[];
     version: number;
     created_at: string;
     updated_at: string;
@@ -35,10 +35,10 @@ const commentSchema = new mongoose.Schema({
     product: {
         type: String,
     },
-    replies: {
+    replies: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Reply"
-    }
+    }]
 }, {
     toJSON: {
         transform(doc, ret) {

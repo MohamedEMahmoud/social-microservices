@@ -6,6 +6,7 @@ import { Password } from "../services/Password";
 import _ from "lodash";
 import { natsWrapper } from "../nats-wrapper";
 import { UserUpdatedPublisher } from "../events/publishers/user-updated-publisher";
+import jwt from "jsonwebtoken";
 const router = express.Router();
 
 router.patch("/api/auth/user",
@@ -39,6 +40,13 @@ router.patch("/api/auth/user",
             }
 
             user.email = req.body.email;
+
+            req.session = null;
+            const userJwt = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_KEY!);
+
+            req.session = {
+                jwt: userJwt
+            };
         }
 
         if (req.body.password) {
@@ -115,16 +123,28 @@ router.patch("/api/auth/user",
 
         user.updated_at = new Date().toISOString();
         _.extend(user, req.body);
-        await user.save();
 
-        await new UserUpdatedPublisher(natsWrapper.client).publish({
-            id: user.id,
-            email: user.email,
-            username: user.username,
-            profilePicture: user.profilePicture,
-            coverPicture: user.coverPicture,
-            version: user.version
-        });
+        const savedData = await user.save();
+
+        if (savedData) {
+
+            const bodyData: { [key: string]: string; } = {};
+
+            _.each(req.body, (value, key: string) => {
+                const fields = ["email", "username", "profilePicture", "coverPicture"];
+                fields.forEach(el => {
+                    if (key === el) {
+                        bodyData[key] = value;
+                    }
+                });
+            });
+
+            await new UserUpdatedPublisher(natsWrapper.client).publish({
+                id: savedData.id,
+                ...bodyData,
+                version: savedData.version
+            });
+        }
 
         res.status(200).send({ status: 200, user, success: true });
     });

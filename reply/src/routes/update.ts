@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { requireAuth, BadRequestError, upload } from "@mesocial/common";
-import { Reply } from "../model/reply.model";
+import { Reply } from "../models/reply.model";
 import { v2 as Cloudinary } from "cloudinary";
 import { randomBytes } from "crypto";
 import _ from "lodash";
@@ -12,7 +12,7 @@ router.patch("/api/reply",
     async (req: Request, res: Response) => {
         const files = req.files as { [fieldname: string]: Express.Multer.File[]; };
 
-        const reply = await Reply.findById(req.query.id);
+        const reply = await Reply.findById(req.query.replyId);
 
         if (!reply) {
             throw new BadRequestError("reply Not Found");

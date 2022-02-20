@@ -1,6 +1,6 @@
-import { Listener, Subjects, FollowCreatedEvent } from "@mesocial/common";
+import { Listener, Subjects, FollowCreatedEvent, currentUser } from "@mesocial/common";
 import { queueGroupName } from "./queue-group-name";
-import { User } from "../../model/user.model";
+import { User } from "../../models/user.model";
 import { Message } from "node-nats-streaming";
 
 export class FollowCreatedListener extends Listener<FollowCreatedEvent> {
@@ -8,22 +8,26 @@ export class FollowCreatedListener extends Listener<FollowCreatedEvent> {
     queueGroupName = queueGroupName;
     async onMessage(data: FollowCreatedEvent["data"], msg: Message) {
 
-        const currentUser = await User.findOne({
-            id: data.id,
-            version: data.currentUserVersion - 1
-        });
+        const currentUser = await User.findOneAndUpdate(
+            { _id: data.follower, version: data.currentUserVersion - 1 },
+            { $push: { followings: data.following } },
+            { new: true }
+        );
+        if (!currentUser) {
+            throw new Error("User Not Found");
+        }
+        await currentUser.save();
 
-        const user = await User.findOne({
-            id: data.following,
-            version: data.userVersion - 1
-        });
-
-        if (!user || !currentUser) {
+        const user = await User.findOneAndUpdate(
+            { _id: data.following, version: data.userVersion - 1 },
+            { $push: { followers: data.follower } },
+            { new: true }
+        );
+        if (!user) {
             throw new Error("User Not Found");
         }
 
-        await user.updateOne({ $push: { followers: data.follower } });
-        await currentUser.updateOne({ $push: { followings: data.following } });
+        await user.save();
 
         msg.ack();
     }

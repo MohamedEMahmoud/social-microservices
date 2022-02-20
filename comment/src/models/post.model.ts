@@ -1,16 +1,13 @@
 import mongoose from "mongoose";
 import { ModelType } from "@mesocial/common";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
-
 interface PostAttrs {
     id: string;
     author: string;
-    type: ModelType;
-    comments: string[];
+    version: number;
 }
 
 interface PostDoc extends mongoose.Document {
-    id: string;
     author: string;
     type: ModelType;
     comments: string[];
@@ -30,8 +27,7 @@ const postSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        required: true,
-        enum: Object.values(ModelType),
+        default: ModelType.Post
     },
     comments:
         [

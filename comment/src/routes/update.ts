@@ -1,9 +1,11 @@
 import express, { Request, Response } from "express";
 import { requireAuth, BadRequestError, upload } from "@mesocial/common";
-import { Comment } from "../model/comment.model";
+import { Comment } from "../models/comment.model";
 import { v2 as Cloudinary } from "cloudinary";
 import { randomBytes } from "crypto";
 import _ from "lodash";
+import { CommentUpdatedPublisher } from "../events/publishers/comment-updated-publisher";
+import { natsWrapper } from "../nats-wrapper";
 const router = express.Router();
 
 router.patch("/api/comment",
@@ -12,7 +14,7 @@ router.patch("/api/comment",
     async (req: Request, res: Response) => {
         const files = req.files as { [fieldname: string]: Express.Multer.File[]; };
 
-        const comment = await Comment.findById(req.query.id);
+        const comment = await Comment.findById(req.query.commentId);
 
         if (!comment) {
             throw new BadRequestError("Comment Not Found");
@@ -49,7 +51,15 @@ router.patch("/api/comment",
 
         _.extend(comment, req.body);
 
-        await comment.save();
+        const commentData = await comment.save();
+
+        if (commentData) {
+            await new CommentUpdatedPublisher(natsWrapper.client).publish({
+                id: commentData.id,
+                version: commentData.version
+            });
+        }
+
         res.status(200).send({ status: 200, comment, success: true });
 
     });

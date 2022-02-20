@@ -7,7 +7,7 @@ router.get("/api/product",
     requireAuth,
     async (req: Request, res: Response) => {
 
-        const product = await Product.findById(req.query.id);
+        const product = await Product.findById(req.query.productId);
         if (!product) {
             throw new BadRequestError("Product Not Found");
         }

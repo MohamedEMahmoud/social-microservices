@@ -6,7 +6,6 @@ import { json } from "body-parser";
 import { NotFoundError, errorHandler, currentUser } from "@mesocial/common";
 import { newProductRouter } from "./routes/new";
 import { updateProductRouter } from "./routes/update";
-import { deleteProductRouter } from "./routes/delete";
 import { like_unlikeProductRouter } from "./routes/like-unlike";
 import { showProductRouter } from "./routes/show";
 import { show_allProductRouter } from "./routes/show-all";
@@ -27,7 +26,6 @@ app.use([
     currentUser,
     newProductRouter,
     updateProductRouter,
-    deleteProductRouter,
     like_unlikeProductRouter,
     showProductRouter,
     show_allProductRouter,

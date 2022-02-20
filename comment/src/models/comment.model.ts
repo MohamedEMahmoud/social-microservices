@@ -9,13 +9,13 @@ interface CommentAttrs {
     product?: string;
 }
 
-interface CommentDoc extends mongoose.Document {
+export interface CommentDoc extends mongoose.Document {
     userId: string;
     content: string;
     media: { id: string, URL: string; }[];
     post: string;
     product: string;
-    replies: { userId: string; content: string; media: string; comment: string; }[];
+    replies: string[];
     version: number;
     created_at: string;
     updated_at: string;

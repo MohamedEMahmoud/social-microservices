@@ -14,11 +14,12 @@ export class ProductUpdatedListener extends Listener<ProductUpdatedEvent>{
             throw new Error("Product Not Found");
         }
 
-        product.set({
-            images: data.images,
-            content: data.content,
-            price: data.price
-        });
+        const fields: { [key: string]: any; } = { ...data };
+
+        delete fields["version"];
+
+        product.set({ ...fields });
+
 
         await product.save();
 

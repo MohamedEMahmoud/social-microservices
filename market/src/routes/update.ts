@@ -16,7 +16,7 @@ router.patch("/api/product",
     async (req: Request, res: Response) => {
         const files = req.files as { [fieldname: string]: Express.Multer.File[]; };
 
-        const product = await Product.findById(req.query.id);
+        const product = await Product.findById(req.query.productId);
 
         if (!product) {
             throw new BadRequestError("Product Not Found");
@@ -64,16 +64,27 @@ router.patch("/api/product",
 
         _.extend(product, req.body);
 
-        await product.save();
+        const productData = await product.save();
+        if (productData) {
 
-        await new ProductUpdatedPublisher(natsWrapper.client).publish({
-            id: product.id,
-            merchantId: product.merchantId,
-            images: product.images,
-            content: product.content,
-            price: product.price,
-            version: product.version
-        });
+            const bodyData: { [key: string]: any; } = {};
+
+            _.each(req.body, (value, key: string) => {
+                const fields = ["images", "content", "price"];
+                fields.forEach(el => {
+                    if (key === el) {
+                        bodyData[key] = value;
+                    }
+                });
+            });
+
+            await new ProductUpdatedPublisher(natsWrapper.client).publish({
+                id: product.id,
+                merchantId: product.merchantId,
+                ...bodyData,
+                version: product.version
+            });
+        }
 
         res.status(200).send({ status: 200, product, success: true });
 

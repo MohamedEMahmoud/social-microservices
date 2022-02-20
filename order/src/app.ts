@@ -24,7 +24,8 @@ app.use([
     newOrderRouter,
     indexOrderRouter,
     showOrderRouter,
-    updateOrderRouter
+    updateOrderRouter,
+
 ]);
 
 app.use("*", async () => { throw new NotFoundError(); }, errorHandler);

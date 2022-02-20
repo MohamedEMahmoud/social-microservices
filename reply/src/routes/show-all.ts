@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { requireAuth, BadRequestError } from "@mesocial/common";
-import { Comment } from "../model/comment.model";
+import { Comment } from "../models/comment.model";
 import mongoose from "mongoose";
 
 const router = express.Router();

@@ -1,6 +1,6 @@
 import { Listener, Subjects, UserDeletedEvent } from "@mesocial/common";
 import { queueGroupName } from "./queue-group-name";
-import { User } from "../../model/user.model";
+import { User } from "../../models/user.model";
 import { Message } from "node-nats-streaming";
 
 export class UserDeletedListener extends Listener<UserDeletedEvent> {

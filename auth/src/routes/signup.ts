@@ -103,10 +103,11 @@ router.post("/api/auth/signup",
             process.env.CLIENT_SECRET,
             process.env.REDIRECT_URI
         );
+
         client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
         const accessToken = await client.getAccessToken();
 
-        const activeKey = randomBytes(8).toString("hex");
+        const activeKey = randomBytes(8).toString("hex").toLowerCase();
 
         let transport = nodemailer.createTransport({
             host: "smtp.gmail.com",
@@ -173,6 +174,7 @@ router.post("/api/auth/signup",
     });
 
 const nodemailerAccessTokenIsExpired = (accessToken: any) => {
+
     if (new Date() > new Date(accessToken.res.data.expiry_date)) {
         return {
             user: process.env.MAIL_USER,

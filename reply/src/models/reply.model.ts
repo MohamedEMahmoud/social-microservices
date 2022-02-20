@@ -7,7 +7,7 @@ interface ReplyAttrs {
     comment: string;
 }
 
-interface ReplyDoc extends mongoose.Document {
+export interface ReplyDoc extends mongoose.Document {
     userId: string;
     content: string;
     media: { id: string, URL: string; }[];

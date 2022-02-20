@@ -1,17 +1,15 @@
 import mongoose from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { ModelType } from "@mesocial/common";
+import { CommentDoc } from "./comment.model";
 interface ProductAttrs {
     id: string;
     merchantId: string;
-    type: ModelType;
-    comments: string[];
 }
 
 interface ProductDoc extends mongoose.Document {
     id: string;
     merchantId: string;
-    type: ModelType;
     comments: string[];
     version: number;
     created_at: string;
@@ -30,7 +28,7 @@ const productSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: Object.values(ModelType),
+        default: ModelType.Product,
     },
     comments:
         [

@@ -7,6 +7,8 @@ import { UserUpdatedListener } from "./events/listeners/user-updated-listener";
 import { UserDeletedListener } from "./events/listeners/user-deleted-listener";
 import { FollowCreatedListener } from "./events/listeners/follow-created-listener";
 import { UnFollowCreatedListener } from "./events/listeners/unfollow-created-listener";
+import { CommentCreatedListener } from "./events/listeners/comment-created-listener";
+import { CommentDeletedListener } from "./events/listeners/comment-deleted-listener";
 (async () => {
     const Environment = [
         "JWT_KEY",
@@ -39,6 +41,8 @@ import { UnFollowCreatedListener } from "./events/listeners/unfollow-created-lis
         new UserDeletedListener(natsWrapper.client).listen();
         new FollowCreatedListener(natsWrapper.client).listen();
         new UnFollowCreatedListener(natsWrapper.client).listen();
+        new CommentCreatedListener(natsWrapper.client).listen();
+        new CommentDeletedListener(natsWrapper.client).listen();
 
         await mongoose.connect(process.env.MONGO_URI!, {
             useNewUrlParser: true,

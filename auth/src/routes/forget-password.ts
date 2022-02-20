@@ -20,7 +20,7 @@ router.patch("/api/auth/forget", upload.none(), async (req: Request, res: Respon
     );
     client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
     const accessToken = await client.getAccessToken();
-    const resetPasswordKey = randomBytes(8).toString("hex");
+    const resetPasswordKey = randomBytes(8).toString("hex").toLowerCase();
     let transport = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: process.env.MAIL_SERVER_PORT,

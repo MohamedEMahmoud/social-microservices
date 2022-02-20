@@ -53,13 +53,23 @@ router.patch("/api/auth/admin/ban",
 
         existingUser.hasAccess = false;
 
-        const ban = {
-            period: req.body.period ? req.body.period : undefined,
-            reason: req.body.reason,
-            end_in: req.body.period ? moment().add(2, "m").format() : undefined, //num, <moment.unitOfTime.DurationConstructor>str
-        } as BanUser;
+        if (existingUser.ban.length === 0) {
+            const ban = {
+                period: req.body.period ? req.body.period : undefined,
+                reason: req.body.reason,
+                end_in: req.body.period ? moment().add(num, <moment.unitOfTime.DurationConstructor>str).format() : undefined,
+            } as BanUser;
 
-        existingUser.ban.push(ban);
+            existingUser.ban.push(ban);
+        } else {
+            const { end_in } = existingUser.ban[existingUser.ban.length - 1];
+            const ban = {
+                period: req.body.period ? req.body.period : undefined,
+                reason: req.body.reason,
+                end_in: req.body.period ? moment(end_in).add(num, <moment.unitOfTime.DurationConstructor>str).format() : undefined,
+            } as BanUser;
+            existingUser.ban.push(ban);
+        }
 
         await existingUser.save();
 
@@ -73,6 +83,7 @@ router.patch("/api/auth/admin/ban",
                 }
             });
         }
+
         res.status(200).send({ status: 200, existingUser, success: true });
 
     });

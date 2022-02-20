@@ -18,17 +18,25 @@ router.patch("/api/auth/user/follow",
 
         const currentUser = await User.findByIdAndUpdate(req.currentUser!.id, { $push: { followings: user.id } }, { new: true });
 
+        if (!currentUser) {
+            throw new BadRequestError("User no longer exists");
+        }
+
         await user.updateOne({ $push: { followers: currentUser!.id } });
 
-        // todo: publish user data to timeline rout in post service
+        const userData = await user.save();
 
-        await new FollowCreatedPublisher(natsWrapper.client).publish({
-            id: currentUser!.id,
-            follower: currentUser!.id,
-            currentUserVersion: currentUser!.version,
-            following: user.id,
-            userVersion: user.version,
-        });
+        const currentUserData = await currentUser.save();
+
+        if (userData && currentUserData) {
+            await new FollowCreatedPublisher(natsWrapper.client).publish({
+                follower: currentUserData.id,
+                currentUserVersion: currentUserData.version,
+                following: userData.id,
+                userVersion: userData.version,
+            });
+        }
+
 
 
         res.status(200).send({ status: 200, currentUser, success: true });

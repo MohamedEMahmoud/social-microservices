@@ -4,6 +4,8 @@ import { natsWrapper } from "./nats-wrapper";
 import app from "./app";
 import { OrderCancelledListener } from "./events/listeners/order-cancelled-listener";
 import { OrderCreatedListener } from "./events/listeners/order-created-listener";
+import { CommentCreatedListener } from "./events/listeners/comment-created-listener";
+import { CommentDeletedListener } from "./events/listeners/comment-deleted-listener";
 (async () => {
     const Environment = [
         "JWT_KEY",
@@ -34,6 +36,8 @@ import { OrderCreatedListener } from "./events/listeners/order-created-listener"
 
         new OrderCreatedListener(natsWrapper.client).listen();
         new OrderCancelledListener(natsWrapper.client).listen();
+        new CommentCreatedListener(natsWrapper.client).listen();
+        new CommentDeletedListener(natsWrapper.client).listen();
 
         await mongoose.connect(process.env.MONGO_URI!, {
             useNewUrlParser: true,

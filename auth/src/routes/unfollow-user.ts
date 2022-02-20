@@ -18,15 +18,24 @@ router.patch("/api/auth/user/unfollow",
 
         const currentUser = await User.findByIdAndUpdate(req.currentUser!.id, { $pull: { followings: user.id } }, { new: true });
 
+        if (!currentUser) {
+            throw new BadRequestError("User no longer exists");
+        }
+
         await user.updateOne({ $pull: { followers: currentUser!.id } });
 
-        await new UnFollowCreatedPublisher(natsWrapper.client).publish({
-            id: currentUser!.id,
-            follower: currentUser!.id,
-            currentUserVersion: currentUser!.version,
-            following: user.id,
-            userVersion: user.version
-        });
+        const userData = await user.save();
+
+        const currentUserData = await currentUser.save();
+
+        if (userData && currentUserData) {
+            await new UnFollowCreatedPublisher(natsWrapper.client).publish({
+                follower: currentUserData.id,
+                currentUserVersion: currentUserData.version,
+                following: userData.id,
+                userVersion: userData.version
+            });
+        }
 
         res.status(200).send({ status: 200, currentUser, success: true });
     });

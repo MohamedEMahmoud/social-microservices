@@ -1,9 +1,11 @@
 import express, { Request, Response } from "express";
 import { requireAuth, BadRequestError, upload, validateImage } from "@mesocial/common";
-import { Post } from "../model/post.model";
+import { Post } from "../models/post.model";
 import { v2 as Cloudinary } from "cloudinary";
 import _ from "lodash";
 import { randomBytes } from "crypto";
+import { PostUpdatedPublisher } from "../events/publishers/post-updated-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -14,7 +16,7 @@ router.patch("/api/post",
     async (req: Request, res: Response) => {
         const files = req.files as { [fieldname: string]: Express.Multer.File[]; };
 
-        const post = await Post.findById(req.query.id);
+        const post = await Post.findById(req.query.postId);
 
         if (!post) {
             throw new BadRequestError("Post Not Found");
@@ -54,7 +56,13 @@ router.patch("/api/post",
 
         _.extend(post, req.body);
 
-        await post.save();
+        const postData = await post.save();
+        if (postData) {
+            await new PostUpdatedPublisher(natsWrapper.client).publish({
+                id: postData.id,
+                version: postData.version
+            });
+        }
         res.status(200).send({ status: 200, post, success: true });
 
     });

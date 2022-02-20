@@ -1,9 +1,10 @@
 import express, { Request, Response } from "express";
 import { requireAuth, upload, validateImage } from "@mesocial/common";
-import { Post } from "../model/post.model";
+import { Post } from "../models/post.model";
 import { v2 as Cloudinary } from "cloudinary";
 import { randomBytes } from "crypto";
-
+import { PostCreatedPublisher } from "../events/publishers/post-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 const router = express.Router();
 
 router.post("/api/post",
@@ -45,7 +46,17 @@ router.post("/api/post",
                 });
             });
         }
-        await post.save();
+
+        const postData = await post.save();
+
+        if (postData) {
+            await new PostCreatedPublisher(natsWrapper.client).publish({
+                id: postData.id,
+                author: postData.author,
+                version: postData.version,
+            });
+        }
+
         res.status(201).send({ status: 201, post, success: true });
 
     });
