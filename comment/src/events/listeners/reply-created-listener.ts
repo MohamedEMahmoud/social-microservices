@@ -23,6 +23,7 @@ export class ReplyCreatedListener extends Listener<ReplyCreatedEvent> {
             await new CommentUpdatedPublisher(natsWrapper.client).publish({
                 id: commentData.id,
                 replyId: data.id,
+                replyArrayLength: comment.replies.length,
                 version: commentData.version
             });
         }
